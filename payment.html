@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment – Konkan Navigator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a6b6b;
+      --secondary: #2d7a4a;
+      --accent: #d4a017;
+      --heading: #1a1a1a;
+      --text: #4a4a4a;
+      --border: #e1e1e1;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --bg-main: #f8f9fa;
+      --primary-gradient: linear-gradient(135deg, #1a6b6b 0%, #2d7a4a 100%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text); line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .section { padding: 3rem 0; }
+
+    .navbar { background: white; padding: 1rem 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: fixed; width: 100%; top: 0; z-index: 1000; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); text-decoration: none; }
+    .nav-menu { display: flex; list-style: none; gap: 1.5rem; }
+    .nav-link { text-decoration: none; color: var(--text); font-weight: 500; transition: 0.3s; }
+
+    .payment-layout { display: grid; grid-template-columns: 1fr 400px; gap: 40px; margin-top: 2rem; }
+    .card { background: white; border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-md); margin-bottom: 2rem; }
+    
+    .payment-methods { display: grid; gap: 1rem; margin-bottom: 2rem; }
+    .payment-method { border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 1.2rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 1rem; font-weight: 600; }
+    .payment-method.active { border-color: var(--secondary); background: rgba(45, 122, 74, 0.05); }
+
+    .summary-item { display: flex; justify-content: space-between; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+    .summary-item.total { border-bottom: none; font-weight: 800; font-size: 1.4rem; color: var(--secondary); margin-top: 1rem; }
+    
+    .btn { padding: 1rem; border-radius: var(--radius-sm); border: none; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; font-size: 1rem; }
+    .btn-primary { background: var(--primary-gradient); color: white; }
+    .btn-secondary { background: #eee; color: #666; margin-top: 10px; }
+
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+    .overlay-content { background: white; padding: 3rem; border-radius: var(--radius); text-align: center; max-width: 450px; width: 100%; }
+    .spinner { width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--secondary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1.5rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">🧭 Konkan Navigator</a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="explore.html" class="nav-link">Explore</a></li>
+        <li><a href="guides.html" class="nav-link">Guides</a></li>
+        <li><a href="trip-planner.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="transport.html" class="nav-link">Transport</a></li>
+        <li><a href="payment.html" class="nav-link">Payment</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="section" style="background: var(--primary-gradient); color: white; padding-top: 120px; text-align: center;">
+    <div class="container">
+      <h1 style="font-size: 2.5rem; font-weight: 800;">Complete Your Booking</h1>
+      <p style="opacity: 0.9;">Secure payment gateway for Konkan Navigator</p>
+    </div>
+  </header>
+
+  <main class="container section">
+    <div class="payment-layout">
+      <div class="payment-selection">
+        <div class="card">
+          <h2>💳 Payment Details</h2>
+          <div class="payment-methods">
+            <div class="payment-method active">📱 UPI / Mobile Payment</div>
+            <div class="payment-method">💳 Credit / Debit Card</div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="booking-summary">
+        <div class="card">
+          <h3>📋 Order Summary</h3>
+          <div id="summaryDetails">
+            </div>
+          <div style="margin-top: 2rem;">
+            <button class="btn btn-primary" onclick="startPayment()">✅ Complete Booking</button>
+            <button class="btn btn-secondary" onclick="window.location.href='transport.html'">❌ Cancel</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="loader" class="overlay"><div class="overlay-content"><div class="spinner"></div><h3>Processing Payment</h3></div></div>
+  <div id="success" class="overlay"><div class="overlay-content"><h2>Booking Confirmed!</h2><button class="btn btn-primary" onclick="window.location.href='index.html'">Return to Home</button></div></div>
+
+  <script>
+  function init() {
+    const saved = localStorage.getItem('bookingData');
+    const booking = saved ? JSON.parse(saved) : null;
+
+    // Check if any booking data exists
+    if (!booking) {
+      alert("No booking details found! Returning to Guides.");
+      window.location.href = 'guides.html';
+      return;
+    }
+
+    let html = '';
+    let subtotal = 0;
+
+    // 1. Transport Logic
+    if (booking.transport) {
+      // Ensure price is a clean number
+      const tPrice = parseInt(booking.transport.price) || 0;
+      html += `
+        <div class="summary-item">
+          <span>Route</span>
+          <strong>${booking.transport.from} → ${booking.transport.to}</strong>
+        </div>
+        <div class="summary-item">
+          <span>Transport Fare</span>
+          <strong>₹${tPrice.toLocaleString()}</strong>
+        </div>`;
+      subtotal += tPrice;
+    }
+
+    // 2. Guide Logic - FIXED VERSION
+    if (booking.guide) {
+      // Parse the guide price - handle various formats like "₹800 /hr", "₹1,000 /hr", etc.
+      let gPrice = 0;
+      let priceDisplay = 'Price on Request';
+      
+      if (booking.guide.price && booking.guide.price !== 'Price on Request') {
+        // Extract numbers from price string, remove ₹, commas, and /hr
+        const priceStr = booking.guide.price.toString();
+        const numericValue = priceStr.replace(/[^\d]/g, '');
+        gPrice = parseInt(numericValue) || 0;
+        
+        if (gPrice > 0) {
+          // Format the price with proper comma separation and /hr suffix
+          priceDisplay = `₹${gPrice.toLocaleString()} <span style="font-size:12px;color:var(--text);">/hr</span>`;
+        }
+      }
+      
+      html += `
+        <div class="summary-item">
+          <span>Local Guide</span>
+          <strong>${booking.guide.name}</strong>
+        </div>
+        <div class="summary-item">
+          <span>Guide Fee</span>
+          <strong>${priceDisplay}</strong>
+        </div>`;
+      
+      if (gPrice > 0) {
+        subtotal += gPrice;
+      }
+    }
+
+    // 3. Service Fee (Fixed)
+    const serviceFee = 25;
+    html += `<div class="summary-item"><span>Service Fee</span><strong>₹${serviceFee}</strong></div>`;
+    subtotal += serviceFee;
+
+    // 4. Final Total Amount
+    // If gPrice was 0 (Price on Request), we indicate that in the total
+    const isFixedPrice = booking.guide ? (parseInt(booking.guide.price.toString().replace(/[^\d]/g, '')) > 0) : true;
+    const totalDisplay = isFixedPrice ? `₹${subtotal.toLocaleString()}` : `₹${subtotal.toLocaleString()} + Guide Fee`;
+
+    html += `
+      <div class="summary-item total">
+        <span>Total Amount</span>
+        <span>${totalDisplay}</span>
+      </div>`;
+    
+    document.getElementById('summaryDetails').innerHTML = html;
+  }
+
+  function startPayment() {
+    // Show the loading spinner
+    document.getElementById('loader').style.display = 'flex';
+    
+    // Simulate a payment processing delay
+    setTimeout(() => {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('success').style.display = 'flex';
+      
+      // Clear the booking after successful "payment"
+      localStorage.removeItem('bookingData');
+    }, 2000);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

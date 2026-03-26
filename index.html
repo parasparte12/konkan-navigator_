@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Konkan Navigator – Guiding Your Konkan Journey</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- HOME-SPECIFIC STYLES ---- */
+    .hero-content .badge { background:rgba(255,255,255,0.2); color:white; border-color:rgba(255,255,255,0.3); }
+    .hero-scroll {
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      margin-top:40px; color:rgba(255,255,255,0.7); font-size:13px;
+      animation: float 2s ease-in-out infinite;
+    }
+    .why-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px;
+    }
+    .why-card {
+      background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2);
+      border-radius:var(--radius); padding:28px 20px; text-align:center;
+      color:white; transition:var(--transition); backdrop-filter:blur(10px);
+    }
+    .why-card:hover { background:rgba(255,255,255,0.2); transform:translateY(-4px); }
+    .why-card .icon { font-size:2.5rem; margin-bottom:14px; }
+    .why-card h4 { color:white; margin-bottom:8px; font-size:1rem; }
+    .why-card p  { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.6; }
+
+    .home-section-alt { background:white; }
+  </style>
+</head>
+<body>
+
+<!-- ======== NAVBAR ======== -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🧭</div>
+      <div class="logo-text">
+        <span>Konkan Navigator</span>
+        <span>Guiding Your Konkan Journey</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="guides.html">Guides</a></li>
+      <li><a href="trip-planner.html">Trip Planner</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="transport.html">Transport</a></li>
+      <li><a href="payment.html">Payment</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <button class="nav-icon-btn" title="Notifications" aria-label="Notifications">
+        🔔
+        <span class="nav-bell-badge">3</span>
+      </button>
+      <a href="signin.html">
+        <div class="nav-avatar" title="Sign In">K</div>
+      </a>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="nav-mobile" id="nav-mobile">
+    <a href="index.html">🏠 Home</a>
+    <a href="explore.html">🌍 Explore</a>
+    <a href="guides.html">🧑‍🤝‍🧑 Guides</a>
+    <a href="trip-planner.html">🧳 Trip Planner</a>
+    <a href="about.html">ℹ️ About</a>
+    <a href="contact.html">📞 Contact</a>
+    <a href="feedback.html">📝 Feedback</a>
+    <a href="transport.html">🚌 Transport</a>
+    <a href="payment.html">💳 Payment</a>
+    <a href="signin.html" style="background:var(--primary-gradient);color:white;justify-content:center;border-radius:50px;margin-top:8px;">Sign In →</a>
+  </div>
+</nav>
+
+<!-- ======== HERO ======== -->
+<section class="hero">
+  <div class="hero-pattern"></div>
+  <div class="container" style="width:100%;">
+    <div class="hero-content animate-fade-up">
+      <span class="badge">📍 Discover Coastal India</span>
+      <h1>Explore the<br><span style="color:rgba(255,255,255,0.9);">Hidden Wonders of</span><br>Konkan Coast</h1>
+      <p class="subtitle">
+        From ancient sea forts to pristine beaches and sacred temples —
+        your perfect Konkan journey starts here. Let's navigate together.
+      </p>
+
+    
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search destinations, experiences…" />
+        <select id="search-cat">
+          <option value="all">All Categories</option>
+          <option value="beach">🏖️ Beaches</option>
+          <option value="fort">🏯 Forts</option>
+          <option value="temple">⛪ Temples</option>
+          <option value="mountain">⛰️ Mountains</option>
+          <option value="food">🍱 Food Spots</option>
+        </select>
+        <button class="btn btn-gold btn-sm ripple" id="search-btn">Explore Now →</button>
+      </div>
+
+      <!-- Quick stats under search -->
+      <div style="display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-top:20px;">
+        <span style="color:rgba(255,255,255,0.8);font-size:13px;">✅ 150+ Destinations</span>
+        <span style="color:rgba(255,255,255,0.8);font-size:13px;">⭐ 4.8 Rating</span>
+        <span style="color:rgba(255,255,255,0.8);font-size:13px;">🧑‍🤝‍🧑 80+ Verified Guides</span>
+      </div>
+
+      <div class="hero-scroll">
+        <span>↓</span> Scroll to discover
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== QUICK CATEGORIES ======== -->
+<section class="section home-section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge">🗂️ Browse by Category</span>
+      <h2>What Are You<br><span class="text-gradient">Looking For?</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="quick-cats reveal">
+      <a href="explore.html?cat=beach" class="quick-cat-card">
+        <span class="cat-icon">🏖️</span>
+        <span>Beaches</span>
+        <small style="color:var(--text);font-size:12px;margin-top:4px;">50+ Spots</small>
+      </a>
+      <a href="explore.html?cat=fort" class="quick-cat-card">
+        <span class="cat-icon">🏯</span>
+        <span>Forts</span>
+        <small style="color:var(--text);font-size:12px;margin-top:4px;">20+ Forts</small>
+      </a>
+      <a href="explore.html?cat=temple" class="quick-cat-card">
+        <span class="cat-icon">⛪</span>
+        <span>Temples</span>
+        <small style="color:var(--text);font-size:12px;margin-top:4px;">30+ Temples</small>
+      </a>
+      <a href="explore.html?cat=mountain" class="quick-cat-card">
+        <span class="cat-icon">⛰️</span>
+        <span>Mountains</span>
+        <small style="color:var(--text);font-size:12px;margin-top:4px;">15+ Trails</small>
+      </a>
+      <a href="explore.html?cat=food" class="quick-cat-card">
+        <span class="cat-icon">🍱</span>
+        <span>Food Spots</span>
+        <small style="color:var(--text);font-size:12px;margin-top:4px;">40+ Places</small>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FEATURED DESTINATIONS ======== -->
+<section class="section" id="destinations">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge">🌟 Editor's Pick</span>
+      <h2>Featured<br><span class="text-gradient">Destinations</span></h2>
+      <div class="divider"></div>
+      <p>Handpicked gems of the Konkan coast, each telling a unique story of culture, nature, and adventure.</p>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="cat-filter reveal">
+      <button class="cat-tag active" data-cat="all">🌐 All</button>
+      <button class="cat-tag" data-cat="beach">🏖️ Beaches</button>
+      <button class="cat-tag" data-cat="fort">🏯 Forts</button>
+      <button class="cat-tag" data-cat="temple">⛪ Temples</button>
+      <button class="cat-tag" data-cat="mountain">⛰️ Mountains</button>
+      <button class="cat-tag" data-cat="food">🍱 Food</button>
+    </div>
+
+    <div class="dest-grid">
+      <!-- Ganpatipule -->
+      <div class="card dest-card reveal" data-cat="temple">
+        <div class="card-img">
+          <img src="https://th.bing.com/th/id/OIP.x9fMW_o61U7NT2A8mwmYQgHaFj?w=266&h=200&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Ganpatipule Temple" loading="lazy" />
+          <div class="card-img-overlay"></div>
+          <span class="card-rating"><span class="star">⭐</span> 4.9</span>
+          <span class="card-cat">⛪ Temple</span>
+        </div>
+        <div class="card-body">
+          <div class="card-loc">📍 Ratnagiri District</div>
+          <h3>Ganpatipule Temple</h3>
+          <p>Sacred self-manifested Ganesh temple on the beachfront, surrounded by serene coconut groves and turquoise sea.</p>
+          <a href="explore.html" class="btn btn-primary btn-sm ripple">View Details →</a>
+        </div>
+      </div>
+
+      <!-- Tarkarli -->
+      <div class="card dest-card reveal" data-cat="beach">
+        <div class="card-img">
+          <img src="https://th.bing.com/th/id/OIP._YNSXHaYyVShvaZElJTY4QHaFj?w=157&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Tarkarli Beach" loading="lazy" />
+          <div class="card-img-overlay"></div>
+          <span class="card-rating"><span class="star">⭐</span> 4.8</span>
+          <span class="card-cat">🏖️ Beach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-loc">📍 Sindhudurg District</div>
+          <h3>Tarkarli Beach</h3>
+          <p>Crystal-clear waters perfect for snorkeling, with vibrant coral reefs and the historic Sindhudurg Fort nearby.</p>
+          <a href="explore.html" class="btn btn-primary btn-sm ripple">View Details →</a>
+        </div>
+      </div>
+
+      <!-- Dapoli -->
+      <div class="card dest-card reveal" data-cat="beach">
+        <div class="card-img">
+          <img src="data:image/webp;base64,UklGRswgAABXRUJQVlA4IMAgAACwiwCdASo9Ae0APp1GnUslo6KsqHR7AZATiWVuCvVYz72/y5LsZqARaUJTpxeB+7fUqD5H/h+B4VL9XX9J6OZ8Q8Mfz/rz/TPfP3VL6/4Pgr/iv7Bnk7McFFCj6Nmb8mj8qYWTzPfy/gP/D6aPW79Gk2arzcHpJBNUHrjS35m3ZHn2CKyEARtXfEdgIhMCl+U6DhZo0G2VpNIAB9QfxWA11iI5Dxg6AmXEStmGbNF01aoWpx5eUJkfRX5VK1UjjOyElcWmLN5fEAz86160XJywaB9SftsNkh0uWoiGQpcyst49ba/m/xOuIVwh8/kAzeZJl76HrHyu/QqkfZjY8QZKgr3sfmSjct6THo8gCNLi3fXX7Xt5mEPx1pPBAqtMtheZo8VDvB3IPloUbENunq672+46Ic3hvg9Hj/0qluslidRbatyT0nY7e8NhU/7K4I4TTqrBf5Yql89cy8LbEe47GL+9UhNCVVvR4TkkYiSsI2klOYmScsYWAENuimwEDDnvDKa0gSMaXDM68jUqJqi3/1DYwY4HFmlJ+aMx5hTzPdinqHSGFpO7yOZ9jFx8mvVT3DtKvBeuuj99SAwKi+9Ak5KqO2Q//028SkryqZizgExPh07IbXGC9DGfnkzXABOjKiubGQYJdhBvvHuojE32XPEukVKM+AM/FX1absL/tARlR1xdLGT8qgmySbM6jMHDCXldiZM0y36DzssK2GpxuyhT0CfMj4ZIZf0NSfDU8kIS/dSp1USlknwK0qKxpHrkiKFFHbA1YkVohTwbllvsgmWBJhjUqutarFMOZ6bav1uN4eL5R5thNoP/g0wmfqTBMOxpSAIvNtPgnH8niMoDm2Tsvl/zUWA5pxX78/8TslpBKEsWdQzVGftAYsHmlIeL/aENg1w4Uldgqz09ypLtsLdNd6MEHHRtoN5ZujFlkcUJhTA+zA1MmxIvjCJBBsY060KjWAAx+r7Wm4ijy08uOV3nDhhm5EbbL0a9eRTseatcBLPda8UtLT0+yFJ2ZrjoL6L7rbyqNPDooug5C337xLlsXqjokN5TtZMH8oOq1vyeWt4hipp3QZ91p7j/HrGj5ooWFEk/rjs86aAtnTSsXh9S6IvHF9weZKBLIEOXS/lBe2Y9Bb9bEy18BZBOIk9G77tvQMSifIEUFMOrvEtP4lajbkpgb3jy2u6ZzD0nEuJfRXd3eK3LX+QJjmUQJO3wotMu8KgYVEN/FnhVh0U+6CIF/y9Wpv3/5Dow4l6ezEJWitIqAZUtAJBIqw0XWHoYw3IL71wbSHCvWDqgPgHH57FPHlq8fpZ756068R58vZsETPhZ37YILCsFIjN881Du4m7/GNlNuF2YFyfgt3jlx9wDel4UOQEOvV7+xBEO9Mjjj0VSdVdLRBgXl/tECU9UGv3PUbqdn0JMdQ06M3exu/vt/QwKy/IC723yhJJVuRCjIym+EW8Qf6W9npX7IhSzlc7KXUr/BD0Zce//uS7wAxpIJ/mAAP71qmpXsJWcGFlkAuOqcvWziW5HdbqP3HTmiRShxcSvbGqfeZLGA2Xyy4wT2Z5NMxNKcKinRgOLN95/Jgt/1LXsT1SJlnchMyx7RKpm509rCQWIa3CPaH4MgHkywQdeoMvMXugVrHr8ezbZbEh8k+35ExCIhO7k1j66GDrxCiF5sbWGR7DfkUBgOeCAAvtfOC6YVIi4BZ2s3htdUkDhvYyUZqRoBckkc0M/b/+HUicQMNzq0UyVZA0Ag/5QYtgAAbIj1g644mS/NxBxpwdLvoTdDfgQ0UIGvJwYQCJuFgF0eKph/K+Cs4nXpT/Smf5v1axc34JD0acVScTS9RQB7AhANG9JkmYITIfa4ZWEtXgRqXomhhJFfnVJQXoCkFcZb36awBg5cv+0bjtjCMAC9Xa+B6sNuqRBoH0/K/2SoB35+fxcvCJypk30UMhn0duU+VldVHbvcj6jzke1hiyVshJ08MVP2W7/0rlMgy5vHGRyzHIT5qpvuldxe4PgnbdyGtko7a24OWBwJcnkf6Zhf2G2zpel1uB03MtCWr4XVArXUkHZVoW+f6+wunbtHjUzvKCbClDB8AOg4V0o0svT0BknHLF2uRXmDaw9h7mz4QJv/BOdk5OrqoOPiMwnaXpH0UVmYHOAXSWrZ8ZrICVTdcbw/VW6gtkeDHiSLsaa0oxr1RnZWDYAa+CjNmj86jMzksJqgvq7EZ1WS8+UZLxtYvR8NBmRX3YZADH5UqskI1Rvkc4a7Dv22eqmiCZpPYiuJWJkmKIVvqDJK0TrHpftYJZUMN2/uRzLzW4yotwdW4sZ8jKcXly0TYZbjkIGR0zY7uagFSLq13zQ/oowxrvKdFKWLXuoaENiqtdlroU7aiX/HxPb1Cj7tOd9FXL7ITzbz5C0OBEc+0JB82yvx3GgzK2n+DDPpB0TzkzRozwCktFLm8VAT7H9Hcmhwin9dFSkjaL8I7MhiVTg3gf7sFFHpMYKNZpnkELchm4cpfN/oSR7AcEdlKs3iZV46sXkFhwgW0hpx02oQangXXt7UAajOHtxQ5eL68ImG+PZBp+Sl/stJKw7KVqh+eHYFfJTjAY+m/lFP23vc0A4g162unZMH9nYCZ/BS5rRfRz5IiQUVVPZsmtVfBj7fckspWIctn9YJwXVWg2inWLBKtdHwdjr5mKEErOcDRe+GmWDTJN+3s8ze05ywUTRcUzZG9F87UwXMEtaL5l7sogfwUepTa0fCxFDYB/LKwp/tTr2kqGWqSbSWSCEu1IkHyYNRunvSi1mt59507775VJD3zxES2ijczqf6+0BpV5G8vCAK6eF27SVZJ933HI5e8nnu7iaEep5Rj3nEBrB8DstbWC1qWWtxqGc03UNIeFPLcYHhbeDlp2OvQF7m7K+89LuKu8PUaW/Z40Pn2E+NKYdGLv3h5dzB1mTE34/APd+tFEtN9yXnetD0OVXtyIt1QTPAW6qT2tFIg4p5FXE4KiVALaHCS/tc1kDAJ49ia0NwCQYTT8h5E6UAl1VBvGMjqD1sqCZlhr7cDwT8zzbTmtGLyIqfy7bE+ZD2QBBc2T+de0RlXLoc+IeuyLzXiN+PNq5WdISLY5FDXTdtz805Y3PGY201Tmn/VVrGxNRAmIHytydRiwBo8mNl9PoVZvN5X4xR8kuw28aknIxBLRcbmPeUH2vOVXUJlqUEZKHCx6qsQfjmjHAzs3X5HZ7e66OG7pzIGddc+OYXCupps1eudZ53WcvIT/B1q3OuZMSB++HCFVZD6NHM8JOVvlE1SgEAp93Q2gHJaFfc2fsi92bl8X/CAfUAPJ98ws0/1qTgPYcYY04fPuYqe6a0jWHSsrPwv5yRLAx/lcLQIK75eu21lg/wdjDdjsGmg6da36D/nS+jsBg0Nal5sIk2MsX4TmjtMfrmwuTElXvIuvr50yViCtvh7hp5/GaXGJ6BY/QmLpHcBRs60fh3zyW1SSRSLufp+hvqgbRGCbxdhMgqY+9+ls5V1ETvj9NoHLquaDCjJV/FuucBGSg1khW+T2OURGTEAk3V5WyowaF0zOjDCFq4c0ktYzAWxC09gSzYCDgGP2/oEXsGsK3TB8BDyNZpXrIyCVsuzRteCh+UorWn9nJJemthSx6Z1xCwi47VAiYoqxNfk/qeI9jsSmql388w64PD+O79XyKeK901JfxjYMSgapwjfnMJLNDInpu7sqUFk1c4iRkVvYuwKdE4Hx/L798vWwUFOEXkOZrjp8Evb868Fcmj/4aDp0sUL7YIE4YexxJbvn4u7Np4UCVnvIed2Zht0rvG3yMLRsPmFWAt+PuhMTU1Dp6fumbOyZAmoeg5b896IM9dPQQVYF6KhL/4pSxdtudovWc9cWejiDMOM4a+6fLL/Wv6GSnqrDsTi5voWsVeYkKxLA7sMkr2pXV9VfT9T6+7/cM9t4rFM9qzKnGSeqoJuJn0pq4zu1q67WVVFhrQwNYRylEkahUD6j0QEFDKXxJAk34lh1N+haLPIwV59NoRawiaV12yLJYDsioeOEIRX2vUD2wqyigJN1lALcpjaQoqhVI+Sd40CqWB0t/4vYyuKHFk2yhmo2flJ+0PGeTdIikfxH3V0lokzXFZoY/YskeBygofNmyUqOqGAIofCgUQK14PwbhMd1Dpu+nGKRT1oQLVdEjgbQdjwKAp7Ei6h5vV3YxXBxeAJljqzqG437pEQBm7v0ut3Y2W4+wP0ZwbBXeutiJOGo2qji3BALD2lAxbGywxPBgnD3iiWAOGr9+uf8PUm2Uvao0LwS8PPZ/ShoDoPOfyoYme6AKX5upOgnp/u1jMboLxGR0LKAaUhxHTyW0KwGx5QMLkOgdhVqoD2fE+j+YdiEL5hdlHsoS6oDnYzWRoMhmIDz8htMmE9xNH1wQ67urZxYa8yHZyrmkwgxEB1wkV838ReYkBRTMpbDMeEuan/ydSf2RSEEtxp+sYn1fSgANInJxs8ZbHLhJnKrmkNOpCCfQakpvEUq9EQb9c2GTS9ihW9uzWEdcpFLuc0DkCRV6fbXvgzfFwpnd9aLiuLcJs/uIsOW7VbssoeucaaQZOMnn0DIwwF0P/Pz/LxtZgVC9GKu1nm56s+EYuniiiv4Lwa3xqGmAZ82w2CVdiqQPtpfcimrrOlXtfrTVrwIB9nl+iAsQG3TEc/aB7lifQwF0Yx6lkV7htlVexXcRBdsdWB3ImbbJG6oj9Qvb7/obCzbIUdeQfppha0OS6DZJaRP1K3+SdaoCCm/B3oQqtmCaySCHouFfuwcCRyvejx3/EJMuULxIUzSJauaRJCkJEgoWXU/as2vzA1KyMO9++ZybkesjIY+2+/xQx8A6Yrs4qTuL9S09xfX4wXUv0cj7PH+1CCTcrtOPmUwkmvCvpLIBEt+PlA8yYaMXFxD3auuNAtIAsk27fRrAEg3V3QPrSRkgc7MOZmcwys1kOT2UBFygWKyV0h4QoXH8cHKhu5tI0VXyr/Ib7y/mZT8TcA+/11haaPnvhBs8NRduwLV8+XLUdNFMf2GqleHQd61UJgnVZ+bPKni2FNH1Z6lop+KQzPDUHt2bG12aYtJjJdN/9lPqOlEss4DpChd+EhA4CsxczVqYxkP7e3TaXM6Y6ca3AOxlF2Kl/XKmduJvAypfLpl9ncJ3YimoFRtBSd5VXk7OoxnnZ1QsW6FyfuajqcUkRjoOlmavuO9B8Hnt9ptRiY79XDhUQD05GHjZk8ks/ByWNTDw4w99TTqwDqanGenoBfoBmMerFAtjq4U25SsWuAjBm3FrmoqSTWIcGjXvveqQ7vMKBvzS/W8MXHHteNLmUMf2nnGvlMCn4RTiQoM/7Se3zcaTLl85LLl7S+r/YfcfHq0/VhK36Np219PlMHMNd63W/WMhPJBE+TGdff7hLj1p9uoTxQr7syKhcOgXXfeevuV4TTBJOxaSC8AEcrb6Xymew1s0H8+1rotsv6Pi0oxhQwfY8GS9G4YdozJcXCVumawLlfpWx1Qa2lOyGka5PfQyaaUBDSw8z9ho/cmP+sgqzhV7RqGXcUWukNqiu2biM2dBhWaEcfy4Wo9Fm+p6lzUaGhgq7vJ/3kXvf3Xlx1SZSU32BV0isxih8iQ/Muuk5QMiqiJJwcFXHBOqapossQ/bSIzlEOMD1KcfpZ7V5v9kojk8YtZqGyCMui11ZcpIv3epuhz7iTyMmM0jdimMVnT/7xtF2U3qei0nTKHpGu8M1bCWSCQUOFou93q2ouET7XwtLYzhGWlysjrWHFWXQEUcxgDv3jXZQZ1wmnW0dt68YGWmnKQgHxayIzIMbeEQfVSc5WwhzLmhL3C7Fxp2bxJdlFu5MTnl07hnf5798Bbjh7KwoIOcthGmZDu3Lx1u6XdE4OzYtdZn26C7wMRkb+PAj2iy7TrlrY1y47Yv+ZCc0N3pFc/twiD6xn7Ftq8GkNvbtTFtEjXkPagWMdOtC5Rx7IVoFbMiN+2KSLYL1Je/WeOFEsOZrAbKttyo8SqfGTq4WWcDa+L5+r7DFHztydv0wcNf7dcVCx65sLevZbiqeCEVZMrIUNY/Q2sKL7zwWR6XBR5U+dJVtktBeYn7iX4H8oebtGysmpnuw0aHSoT549ExoWPOJDzGGtrqTt4MTU7AAXPp+d+e1S+totxos12gbJfcmVuNR4Px3DKxyEFiOdP1n6ePO4zDduzrkSNxn2q45zJDZqKMXcw7qPCd5hQoVjRH0/KI60TdTIoQKmXfZ9aekV4sw2bc6TGxr/Shrk5knOaTYvEyQsfp2/NTBKZKZ9HOVTIa/F6ZljYQOhEySn/a9KQkGEGMW6h3yeTsoDfjOUEWzfrCnesMD02LJi/UEkNaMaahEAMf76Z/diBmP9MgVQ4P7tV+KAe6IOMGLxUC59y0jAteP0TP1JptNi5HqHQ+WQWisjEBVsomRJlBT43tTcDMPJDi564awgkSOx/ZcUzBWuCDB9IEnx2YYQeXbuqIrMAQePQjo0eUgDoCMtyiN86XHWZ0GDjERwBSWToBwQpgC0gIHXjCR7ZLQ3p2bIe9D6a60wGOaDSgHig4PI+XdEjj4mKzuON7alhDbGlTRnQyc1oP5ifFbYmzH0B7vuen8b8YT6uls9TY7lPVQmqF/RRLT5qESj5LRvVQ6ZecKYu7XYUrnFHsA/Q2oGkLAoR6XxHARefZsdq9Bi+fSMpNjAxrwD2deOQE9YQt+npKV9kJjHdxCwe4TllUNvp9vtYc28HM3DY0aTdK05Hlb1On/+hYqm4/NowVxWZfMM86BUynjGuTbh+7CU5/VFD0Ys1aCH27P/HcnwgVKkdJiCJo4DIvlbHga0AHLep6DPljnsj2Pq7Y6cdyaxM6Ldo9Gh+YoHCGD4q4pJSbCX1ODy4viO+X66enQSa+ccn9h5s93T0iboPloEc+1tpoEstAsYVwg6JRUspiZgVEgUrLj6oRdQqgFUS2TJv+tLgIuxROyZ3abJcmB5PcTJaY598tchcaiLh/OvA4wfkBFYhg8lRwCdJwyIkvZkngXlZjFHutXFzn5YTVPfSZruVv/2dvZRnxXREhNVXDKTtIDjIL5AttCOKGGjYWjRGWjCVfLweUlBmotPkrg5+EmCUqDG4ey4IxKV6AMq9GngJ4LvlBeonKVkVNh4ioj2QXI15Aqc3o1iV5nKyX5YVxUjEMFz82WLWyfMIE1++Q7EO5cgnoi5NWdHDIzDBu7g5lsOTVwEZfmrCqbp6FMsJwZB1H1ogf9RAFkP3aVzmR84KyPO5vxOFw7wzKqSFmCu+ZVJ/c1uuh/kTU8N1MOuUqVQPw9pFVo9dIDZFkVUb7qJYdC3npHHvV3BDqTeU7TOubV1llRlnzfbdcD+zBCDvduDnBLsEK7RrdXbogl6xPr0Oesj873BSkKGgWkfcCVe+L5F1dEN2jybBBVW6xxTlP+mGTSlO7A7IQb2Z9McvPzjgCmcQqKPfU1jIsabd1PvCY39+WORql//56SfWD1ZkCjJGt2Yx+T0awek1uJpC4kNkDFguFewFsp0P6Ve5wTSsPP4eS34+GkjdhuB8BEPhFwsELLd/q8ncRtDWretrPEUUs4xwYdtRQn87RTNhiPTApd7nNMvykjGotf6+AEHphObBjALHrBhXZKW0LAWnrTt6UWjIki/XdhM5Fdn8W/fOdsPpNBqadWhHRQaDG45zWHKjzU73LDPrZhbAG88aY8T3XlSkXg8MWs3b7hpmoj+7SdMRy9FH2I+yfW7NYiTkJdhBYyjQ52GQYi2DNKHrXGQLZpF9193qJVYOSvBWQQoIrxT7wZamyovaHXDNBpIv8wcC6bLsE6oXE7V1ejZUZLDziaPuydz6QjuPj751Ljq7zbTcF+3rEdPrgIHCyhY0AZgoqmLUkx70JCjXis17TOuXmaH6SnYPAlgZoPaflBBYhjHszbwB1H/c4DzBCISFe+mZbkbUzMaRpwCMaZl+t6l+G7aOARlhD+6IRTGKEOAXOLHTEZpJRgI4QGmq+mWJZ+UwBvGuoE40olJIDwMQ6bbCcoiL8qnrNAUOtwcn2T7sHhgPDQHiaSRPfgBvlS0x7dLfq2izKusEYcd+CztzEi07EA7qe5n2v1HEubljnpbO8tqjf022WM2ucIa0doI41XOkplwqvCMPdKV1PmFnbDdfaC6G9kJs0aURI4r/+VQT7cRKDTK3mieQw3Ngqjne8e8pSW/XA+cxC/1/wk5jcVe4s6VZukW87G1mhl3IO4enr7LvptorUJZfhzi3p3Leuhua4QClqfHwPzPdR1V/ihivCpQOrYfhyBINkfp8dji56kLaJoU/vsfMx3c9T4z0YqenBAkHiMbYXGGqqMAYoe1hVaSpnC2pERAeozyepua2e11jrE9ZcE1SlXrS2FLNxucN/VCj7ZXZvUKHi5xLjDJDtsO/n4C7KR4M4DrlyWTLEg7fHjUm8lAKMn43WJQ4VTIiTTkuk9e71Z0LweIApfUZOemZ7nI0w1eV9ue32ig+VqQ31brX62BCwccwIrZ3GnuFN0J/2rXI3Mu6S0+pBmcBhvbeLKOXBKnwharfdgrHWW6dnGbWyZxdtwzNHDPwkl8QSBwYNrLew9YBb3Q2ESiW5w31r2RRUgbDYEeAnJoAOAr9GEyqjK8RHu/SNA4xuDR33lMC/5kAKE7AZttxksYma+fOiWiiHsUH0yVit8QXMvnpXSgpFRNVcelpaA2T1mrF/M8EWHEYYTDsgWA0G10twnSoK4R5LLpNqjyxdR4vntlJypBbrvPRoP6n1DevkXxVMqEkP62aI8KThSAJuHkBaAphW97F+bFztdaBEIVcQGR0+FLuflp6IBL743mgKFF2zR/mFDFRz29Sdt/8pNAMdnsWhl07M0LuriaDV3rTEqU/da1Ot4AG7LNb4Jsozhk03dSGqEKq/YwELLUo7ky9exUo9mYGGTTacX2khyRU6lNe1OM1MJRjQxhr4CaEcgKeLOUEWMThinW7jQY9Nbh0kY2q43K2rhf4fRlUHkng1E6ZMIwCfIlVAY5E6gCo92TDoNdZVim2jK4ISdggngf7bqREfJ0mh0PwoPJD3powYXMxCpiLxhnukdKnDFeNhSwup1JVc7KbpUyESq4REzrEsE29kV5xrnQiEDohGoo06be6yDNQNL6qz05kiMdHGdmBdhuGPKO4hK4o6yIQx0kza7R61xMqXb7/BOMkn+eIG74JonZFQkguVFpXkRJBCn6fsS9RPaVfbhyLQDp6yVUXVZClAGK94+G5yNkdK5Z4jB4Np8vPYPJ0XyWewUTN19mPCLpvwxHQOo3207KmXkjGIgsLwNsOMyxpjXASMl9O+UV3A25KeHTPV60fBk0c0+P65Kn7fxMTbt4itr31eGQ9ue3lcUPhGDTK+RB6z6plqhNQVO4BVOlDtU/IXEONOd1y0tAIz0Eq6nQpDromgd6VgxPYXOknPB08EAqfemf419zD60qsfFlKX18KZMW8NEBOXqrGVwHidy7F153MC5WyLReHFRGTukhBczYQRFscQsFXxZeQc7mzvXzM78AAXkY9zukM3zRamhiYPlGQXEflkaKPA7MyQmxq7Rdbit6vMFUzNTtS/Cj+hRi7XwuAq7qljee3G1xDu3g6vExnbQpVqMUmVYbSME2wveAFN3vzaqPf/86CFPms8ZyRwLNTRSdC1i/xpSRBjrk2jU7Wjb3SrSxapBeJNBWpEENBqF6QsR88BKGrQfP4FFJ7UfJaBvU3S1qE4uWuqD85oouxxvdEsuX3sBKLGHSrQtMpvQ8oMzjnpLsbRUvoxqHB+yMbBmSDFCjAJnRTT3shMiE5jpQgYfKeP66vQFG6qOVQ6+jd//s86TJK7Oez4ycXSW/ex9tIwTHmH8yIEsNw9wMkU6r8KxvxPS9lHlNlNmDd4UShXve3L5+Up78Ma1HBeFwrYWrPH8CQBatEuPiV5KipdHBijBZ9FuSKfjOFbaW46JDf4cUDNPFZtZaVhyolICUHSphUauVG6SKaYWb6W4qMBOgbW+cE3Z37XK/Q40jc2cr+KRNrjQNM6CugNs2Lbc77sgv3NC4mG8a4nO7bquoDUj0hCw4dg/P/Jlu7N2iyX26IETKHz2xQxkGhWg1D124L4PEm25EXSunWiE2W+OXNeqM5dZ+nxGeffzS7Ev9s5iM39XOL8T+8mPIL7uij+D00pZlLf9Cvdnl/hVaXIWZYZjobcW0DzbZPq77bWJJyTkOoCxAmXNfXUYpcJCroB5YqjpzDT6kNqhF+I6zrWnjJJhQmj79R7JD8tDyJVuEJMmHX9fWrwVEi5poL18Ca8er2P9MK6GrmeDIvkAiqvyxhSkinafymmkhfZbYAOGuLfM8sVNyjw5+q8AW9qWUHszgYqg6sCSKtOozMiKJHvE7OwDhw5/sQcXnNSKQA2NvgjMLxBKR2HsGzomsbTG/9rME+2Ybz5Hhrf9w/zcPr5Lmhd1K3m7N5NrgL9HIXAWmMrh8olaq/7CvKJfZnKp6n4kqcafVVlgLFDhQB0IBu4sB8YCaa+UvbHhuvFl2BqhCD70txWDTXQdGe/G5t78BH4r3JOMSX7piO+lCA9mKo7sKKZejijtT0o4+rdCQvIDju4WPRQDydUFfAPLzHMTZJPTHIWHhjp6Jl9NREQ1dgsthfY+WVr4kmO3YCwOX3PgHKMhuWga3/gX/0F8OQCDTiqSa1APBtF7NVn4u5UX8TZDl/KvJPlgbGyFcMyRCqHgjW4ZEIpDKeNea7qbNK//+IrBk9mr7kKRRIh7j1HnnI4qYrVyXTiT9456Fe/rEsZW7+gxk1Uv9LOR2dUVu0/seBy39n5oJmq9m95iT1sZhl3EqRQcD4x2tTle8KEUTCUd4KjIOyU6lOpXMZKjMUr1cHAaVI2dxyZBQYWetJzt/KxfDQoM/JLtaLdeLaNO6g0SHfWSWAqO4NDdRRvNIfEiil55YT7f1yziPCU/efe4ir1uyM2/Lcpp+aswX/JRH3Jv+AtdC7scKqSPeSifnMjq4GsDvmXnPEX50h5Wcbgso6bqtXjwIUd+hkXHajIiuc3ESKndnwMbXqrZv/1cG/L8KIxMHRdvpCDOsDlhNXwZRuD8KN0ykD2Q3e+UEhSQB4HYjeu8I60gl3QRPUdEc8aoFUrV5gAP+zpuTA5wT5g0Wu7E/JlGU+dzXeeh6kj98xQgz/OuIQAAA==" alt="Dapoli Beach" loading="lazy" />
+          <div class="card-img-overlay"></div>
+          <span class="card-rating"><span class="star">⭐</span> 4.7</span>
+          <span class="card-cat">🏖️ Beach</span>
+        </div>
+        <div class="card-body">
+          <div class="card-loc">📍 Ratnagiri District</div>
+          <h3>Dapoli Beach</h3>
+          <p>Mini-Mahabaleshwar of Konkan — lush hills, secret beaches, and charming village life along the scenic coast.</p>
+          <a href="explore.html" class="btn btn-primary btn-sm ripple">View Details →</a>
+        </div>
+      </div>
+
+      <!-- Ratnagiri Fort -->
+      <div class="card dest-card reveal" data-cat="fort">
+        <div class="card-img">
+          <img src="https://th.bing.com/th/id/OIP.R75GRxAWgj7b5ObljnDWQQHaE8?w=265&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Ratnagiri Fort" loading="lazy" />
+          <div class="card-img-overlay"></div>
+          <span class="card-rating"><span class="star">⭐</span> 4.6</span>
+          <span class="card-cat">🏯 Fort</span>
+        </div>
+        <div class="card-body">
+          <div class="card-loc">📍 Ratnagiri City</div>
+          <h3>Ratnadurg Fort</h3>
+          <p>Ancient coastal fort offering panoramic views of the Arabian Sea, with a lighthouse and Bhagwati Temple inside.</p>
+          <a href="explore.html" class="btn btn-primary btn-sm ripple">View Details →</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px;" class="reveal">
+      <a href="explore.html" class="btn btn-outline btn-lg ripple">View All Destinations →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ======== WHY KONKAN ======== -->
+<section class="section why-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">🌊 Why Konkan?</span>
+      <h2 style="color:white;">Explore the<br>Magic of Konkan</h2>
+      <div class="divider" style="background:rgba(255,255,255,0.4);"></div>
+      <p style="color:rgba(255,255,255,0.75);">India's best-kept secret — where ancient culture meets untouched nature.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid reveal" style="margin-bottom:50px;">
+      <div class="stat-item">
+        <div class="stat-num" data-count="150" data-suffix="+">0+</div>
+        <div class="stat-label">Hidden Spots</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="80" data-suffix="+">0+</div>
+        <div class="stat-label">Expert Guides</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-count="50" data-suffix="+">0+</div>
+        <div class="stat-label">Pristine Beaches</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4.8★</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+    </div>
+
+    <!-- Why Cards -->
+    <div class="why-grid reveal">
+      <div class="why-card">
+        <div class="icon">🏖️</div>
+        <h4>Untouched Beaches</h4>
+        <p>Miles of secluded, pristine beaches with zero crowds and stunning sunsets.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">🍱</div>
+        <h4>Authentic Cuisine</h4>
+        <p>Famous Malvani seafood, sol kadhi, and cashew feni — flavors you'll never forget.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">🏯</div>
+        <h4>Rich Heritage</h4>
+        <p>Magnificent sea forts, ancient temples, and centuries of Maratha naval history.</p>
+      </div>
+      <div class="why-card">
+        <div class="icon">🌿</div>
+        <h4>Lush Greenery</h4>
+        <p>Western Ghats backdrop with waterfalls, spice farms, and tropical forests.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:48px;" class="reveal">
+      <a href="trip-planner.html" class="btn btn-white btn-lg ripple">🧳 Plan Your Trip →</a>
+    </div>
+  </div>
+</section>
+  <!-- ===== TRANSPORT & PAYMENT SECTION ===== -->
+<section class="section home-section-alt">
+  <div class="container">
+
+    <div class="section-header">
+      <h2>Plan Your Journey</h2>
+      <p>Book transport and manage payments easily with our smart system</p>
+    </div>
+
+    <div class="tp-grid">
+
+      <!-- Transport Card -->
+      <div class="tp-card reveal">
+        <div class="tp-icon">🚌</div>
+        <h3>Transport Updates</h3>
+        <p>Check live buses, trains, routes, and availability across Konkan.</p>
+        <a href="transport.html" class="btn btn-primary ripple">View Transport →</a>
+      </div>
+
+      <!-- Payment Card -->
+      <div class="tp-card reveal">
+        <div class="tp-icon">💳</div>
+        <h3>Secure Payments</h3>
+        <p>Pay using UPI, cards, or wallets with fast and secure booking.</p>
+        <a href="payment.html" class="btn btn-gold ripple">Make Payment →</a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ======== TESTIMONIALS ======== -->
+<section class="section home-section-alt">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge">💬 Traveler Stories</span>
+      <h2>What Our<br><span class="text-gradient">Explorers Say</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;">
+      <div class="glass-card reveal" style="padding:28px;">
+        <div style="color:var(--star);font-size:18px;margin-bottom:12px;">⭐⭐⭐⭐⭐</div>
+        <p style="font-style:italic;color:var(--text);margin-bottom:18px;">"Konkan Navigator made our trip absolutely magical. The guide was knowledgeable, the places were stunning, and the whole experience was seamless!"</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;">P</div>
+          <div>
+            <strong style="font-size:14px;color:var(--heading);">Priya Sharma</strong>
+            <p style="font-size:12px;color:var(--text);margin:0;">Mumbai • Traveled to Tarkarli</p>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card reveal" style="padding:28px;">
+        <div style="color:var(--star);font-size:18px;margin-bottom:12px;">⭐⭐⭐⭐⭐</div>
+        <p style="font-style:italic;color:var(--text);margin-bottom:18px;">"The trip planner saved us hours of research. Our customized itinerary was perfect — beaches, forts, and authentic Malvani food every day!"</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;">R</div>
+          <div>
+            <strong style="font-size:14px;color:var(--heading);">Rahul Desai</strong>
+            <p style="font-size:12px;color:var(--text);margin:0;">Pune • Family Trip to Ganpatipule</p>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card reveal" style="padding:28px;">
+        <div style="color:var(--star);font-size:18px;margin-bottom:12px;">⭐⭐⭐⭐⭐</div>
+        <p style="font-style:italic;color:var(--text);margin-bottom:18px;">"Best travel platform for Konkan! The guides are genuine, the information is accurate, and the website is so easy to use. Highly recommend!"</p>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:44px;height:44px;border-radius:50%;background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:16px;">A</div>
+          <div>
+            <strong style="font-size:14px;color:var(--heading);">Anjali Kulkarni</strong>
+            <p style="font-size:12px;color:var(--text);margin:0;">Nashik • Solo Trip to Dapoli</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CTA BANNER ======== -->
+<section style="background:var(--primary-gradient);padding:70px 0;text-align:center;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 50%,rgba(255,255,255,0.08) 0%,transparent 60%);"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="reveal">
+      <h2 style="color:white;margin-bottom:12px;">Ready to Explore Konkan?</h2>
+      <p style="color:rgba(255,255,255,0.8);margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto;">
+        Join thousands of happy explorers who've discovered the magic of India's most beautiful coastline.
+      </p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="explore.html" class="btn btn-gold btn-lg ripple">🌍 Start Exploring</a>
+        <a href="guides.html" class="btn btn-white btn-lg ripple">🧑‍🤝‍🧑 Find a Guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer>
+  <div class="footer-brand">🧭 Konkan Navigator</div>
+  <div class="footer-tagline">Guiding Your Konkan Journey</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="explore.html">Explore</a>
+    <a href="guides.html">Guides</a>
+    <a href="trip-planner.html">Trip Planner</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="transport.html">Transport</a>
+    <a href="payment.html">Payment</a>
+  </div>
+  <div class="footer-copy">© 2025 Konkan Navigator. All rights reserved.</div>
+</footer>
+
+<div id="toast-container"></div>
+<script src="js/script.js"></script>
+</body>
+</html>

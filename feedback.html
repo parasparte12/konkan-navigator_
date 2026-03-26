@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback – Konkan Navigator</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .feedback-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .feedback-form-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+    }
+    .feedback-form-card h2 { margin-bottom: 6px; }
+    .feedback-form-card > p { font-size: 14px; color: var(--text); margin-bottom: 32px; }
+
+    /* Question numbering */
+    .q-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      background: var(--primary-gradient);
+      color: white; border-radius: 50%;
+      font-size: 12px; font-weight: 700;
+      margin-right: 10px; flex-shrink: 0;
+    }
+    .q-label {
+      display: flex; align-items: center;
+      font-size: 14px; font-weight: 700;
+      color: var(--heading); margin-bottom: 12px;
+    }
+
+    /* Radio / Check options */
+    .options-list { display: flex; flex-direction: column; gap: 8px; }
+    .option-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer; transition: var(--transition);
+      font-size: 14px; color: var(--heading);
+    }
+    .option-item:hover { border-color: var(--accent); background: rgba(26,107,107,0.04); }
+    .option-item input[type="radio"],
+    .option-item input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 16px; height: 16px;
+    }
+    .option-item.selected-opt { border-color: var(--accent); background: rgba(26,107,107,0.07); }
+
+    /* Multi select grid */
+    .multi-select {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* Star Rating */
+    .star-group {
+      display: flex; gap: 8px; align-items: center;
+    }
+    .star-btn {
+      font-size: 28px; cursor: pointer;
+      background: none; border: none;
+      transition: transform 0.15s;
+      line-height: 1;
+    }
+    .star-btn:hover { transform: scale(1.2); }
+    .star-btn.selected { transform: scale(1.1); }
+
+    /* Results section */
+    .feedback-result-wrap {
+      display: none;
+    }
+    .result-header {
+      background: var(--primary-gradient);
+      border-radius: var(--radius) var(--radius) 0 0;
+      padding: 28px;
+      color: white;
+      text-align: center;
+    }
+    .result-header .result-icon { font-size: 3rem; margin-bottom: 12px; }
+    .result-header h3 { color: white; margin-bottom: 4px; }
+    .result-header p { color: rgba(255,255,255,0.8); font-size: 14px; }
+    .result-body {
+      background: white;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Sidebar info */
+    .feedback-sidebar { position: sticky; top: 90px; }
+    .sidebar-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+    .sidebar-card h4 { margin-bottom: 16px; color: var(--heading); }
+
+    .rating-overview {
+      text-align: center; padding: 24px;
+      background: var(--primary-gradient);
+      border-radius: var(--radius);
+      color: white; margin-bottom: 20px;
+    }
+    .rating-overview .big-rating {
+      font-size: 4rem; font-weight: 800;
+      line-height: 1; margin-bottom: 8px;
+    }
+    .rating-overview .stars-big { font-size: 20px; margin-bottom: 8px; }
+    .rating-overview p { font-size: 13px; color: rgba(255,255,255,0.8); }
+
+    .mini-bar {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .mini-bar .star-label { font-size: 13px; font-weight: 600; color: var(--heading); min-width: 36px; }
+    .mini-bar .mini-track { flex: 1; height: 8px; background: rgba(0,0,0,0.07); border-radius: 50px; }
+    .mini-bar .mini-fill  { height: 100%; border-radius: 50px; background: var(--primary-gradient); }
+    .mini-bar .count { font-size: 12px; color: var(--text); min-width: 28px; text-align: right; }
+
+    @media (max-width: 900px) {
+      .feedback-layout { grid-template-columns: 1fr; }
+      .feedback-sidebar { position: static; }
+      .multi-select { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🧭</div>
+      <div class="logo-text">
+        <span>Konkan Navigator</span>
+        <span>Guiding Your Konkan Journey</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="guides.html">Guides</a></li>
+      <li><a href="trip-planner.html">Trip Planner</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-icon-btn">🔔<span class="nav-bell-badge">3</span></button>
+      <a href="signin.html"><div class="nav-avatar">K</div></a>
+      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-mobile">
+    <a href="index.html">🏠 Home</a><a href="explore.html">🌍 Explore</a>
+    <a href="guides.html">🧑‍🤝‍🧑 Guides</a><a href="trip-planner.html">🧳 Trip Planner</a>
+    <a href="about.html">ℹ️ About</a><a href="contact.html">📞 Contact</a>
+    <a href="feedback.html">📝 Feedback</a>
+    <a href="signin.html" style="background:var(--primary-gradient);color:white;justify-content:center;border-radius:50px;margin-top:8px;">Sign In →</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <span class="badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">📝 Share Your Thoughts</span>
+    <h1>Your Feedback Matters</h1>
+    <p>Help us improve Konkan Navigator with your honest experience and suggestions.</p>
+  </div>
+</div>
+
+<!-- FEEDBACK SECTION -->
+<section class="section">
+  <div class="container">
+    <div class="feedback-layout">
+
+      <!-- FORM -->
+      <div>
+        <div class="feedback-form-card reveal">
+          <h2>📝 Share Your Experience</h2>
+          <p>It takes just 2 minutes. Your feedback directly shapes how we improve.</p>
+
+          <form id="feedback-form" novalidate>
+
+            <!-- Q1: Would Recommend -->
+            <div class="form-group">
+              <div class="q-label"><span class="q-num">1</span>Would you recommend Konkan Navigator to friends?</div>
+              <div class="options-list">
+                <label class="option-item">
+                  <input type="radio" name="q1" value="yes" required />
+                  <span>✅ Yes, absolutely! I loved it</span>
+                </label>
+                <label class="option-item">
+                  <input type="radio" name="q1" value="maybe" />
+                  <span>🤔 Maybe, with some improvements</span>
+                </label>
+                <label class="option-item">
+                  <input type="radio" name="q1" value="no" />
+                  <span>❌ No, not yet</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Q2: Features Used -->
+            <div class="form-group">
+              <div class="q-label"><span class="q-num">2</span>Which features did you use? (Select all)</div>
+              <div class="multi-select">
+                <label class="option-item">
+                  <input type="checkbox" name="q2" value="Destination Explorer" />
+                  <span>🌍 Destination Explorer</span>
+                </label>
+                <label class="option-item">
+                  <input type="checkbox" name="q2" value="Trip Planner" />
+                  <span>🧳 Trip Planner</span>
+                </label>
+                <label class="option-item">
+                  <input type="checkbox" name="q2" value="Guide Booking" />
+                  <span>🧑‍🤝‍🧑 Guide Booking</span>
+                </label>
+                <label class="option-item">
+                  <input type="checkbox" name="q2" value="Search & Filter" />
+                  <span>🔍 Search & Filter</span>
+                </label>
+                <label class="option-item">
+                  <input type="checkbox" name="q2" value="About & Contact" />
+                  <span>ℹ️ About & Contact</span>
+                </label>
+                <label class="option-item">
+                  <input type="checkbox" name="q2" value="Mobile View" />
+                  <span>📱 Mobile View</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Q3: What did you enjoy most -->
+            <div class="form-group">
+              <div class="q-label"><span class="q-num">3</span>What did you enjoy most about Konkan Navigator?</div>
+              <textarea id="q3" name="q3" class="form-control" rows="3"
+                placeholder="Share your favourite part — destinations found, guide you booked, itinerary generated…"
+                style="resize:vertical;"></textarea>
+            </div>
+
+            <!-- Q4: Overall Rating -->
+            <div class="form-group">
+              <div class="q-label"><span class="q-num">4</span>Overall experience rating</div>
+              <div class="star-group" id="star-group">
+                <button type="button" class="star-btn" data-value="1">☆</button>
+                <button type="button" class="star-btn" data-value="2">☆</button>
+                <button type="button" class="star-btn" data-value="3">☆</button>
+                <button type="button" class="star-btn" data-value="4">☆</button>
+                <button type="button" class="star-btn" data-value="5">☆</button>
+                <input type="hidden" name="q4-hidden" value="0" />
+                <span id="rating-text" style="margin-left:12px;font-size:14px;color:var(--text);">Click to rate</span>
+              </div>
+            </div>
+
+            <!-- Q5: Suggestions -->
+            <div class="form-group">
+              <div class="q-label"><span class="q-num">5</span>Any suggestions for improvement?</div>
+              <textarea id="q5" name="q5" class="form-control" rows="4"
+                placeholder="Tell us what features you'd love to see, or how we can make your Konkan journey better…"
+                style="resize:vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg ripple" style="width:100%;justify-content:center;">
+              Submit Feedback →
+            </button>
+          </form>
+        </div>
+
+        <!-- RESULT (shown after submit) -->
+        <div id="feedback-result" class="feedback-result-wrap" style="margin-top:28px;">
+          <div class="result-header">
+            <div class="result-icon">🙏</div>
+            <h3>Thank You for Your Feedback!</h3>
+            <p>Your responses help us make Konkan Navigator better every day.</p>
+          </div>
+          <div class="result-body">
+            <!-- Tabs -->
+            <div class="feedback-tabs">
+              <button class="tab-btn active" data-tab="summary">📊 Summary</button>
+              <button class="tab-btn" data-tab="list">📋 All Responses</button>
+              <button class="tab-btn" data-tab="individual">👤 My Response</button>
+            </div>
+
+            <!-- Tab Panels -->
+            <div class="tab-panel active" id="tab-summary">
+              <!-- Filled by JS -->
+              <p style="text-align:center;color:var(--text);padding:20px;">Submit your feedback to see the summary!</p>
+            </div>
+            <div class="tab-panel" id="tab-list">
+              <p style="text-align:center;color:var(--text);padding:20px;">Submit your feedback to see all responses!</p>
+            </div>
+            <div class="tab-panel" id="tab-individual">
+              <p style="text-align:center;color:var(--text);padding:20px;">Submit your feedback to see your response!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="feedback-sidebar">
+        <!-- Overall Rating Display -->
+        <div class="rating-overview reveal">
+          <div class="big-rating">4.8</div>
+          <div class="stars-big">⭐⭐⭐⭐⭐</div>
+          <p>Based on 1,247 reviews</p>
+        </div>
+
+        <!-- Rating breakdown -->
+        <div class="sidebar-card reveal">
+          <h4>⭐ Rating Breakdown</h4>
+          <div class="mini-bar">
+            <span class="star-label">5★</span>
+            <div class="mini-track"><div class="mini-fill" style="width:82%"></div></div>
+            <span class="count">1022</span>
+          </div>
+          <div class="mini-bar">
+            <span class="star-label">4★</span>
+            <div class="mini-track"><div class="mini-fill" style="width:12%"></div></div>
+            <span class="count">149</span>
+          </div>
+          <div class="mini-bar">
+            <span class="star-label">3★</span>
+            <div class="mini-track"><div class="mini-fill" style="width:4%"></div></div>
+            <span class="count">50</span>
+          </div>
+          <div class="mini-bar">
+            <span class="star-label">2★</span>
+            <div class="mini-track"><div class="mini-fill" style="width:1%"></div></div>
+            <span class="count">16</span>
+          </div>
+          <div class="mini-bar">
+            <span class="star-label">1★</span>
+            <div class="mini-track"><div class="mini-fill" style="width:0.5%"></div></div>
+            <span class="count">10</span>
+          </div>
+        </div>
+
+        <!-- Popular Features -->
+        <div class="sidebar-card reveal">
+          <h4>🔥 Most Used Features</h4>
+          <div class="progress-bar-wrap">
+            <div class="label"><span>🌍 Explore Page</span><span>91%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:91%"></div></div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="label"><span>🧳 Trip Planner</span><span>78%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:78%"></div></div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="label"><span>🧑‍🤝‍🧑 Guide Booking</span><span>65%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:65%"></div></div>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="label"><span>🔍 Search & Filter</span><span>59%</span></div>
+            <div class="progress-track"><div class="progress-fill" style="width:59%"></div></div>
+          </div>
+        </div>
+
+        <!-- Recent Reviews -->
+        <div class="sidebar-card reveal">
+          <h4>💬 Recent Reviews</h4>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="padding:14px;background:rgba(26,107,107,0.05);border-radius:10px;border-left:3px solid var(--accent);">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:700;">P</div>
+                <strong style="font-size:13px;">Priya S.</strong>
+                <span style="margin-left:auto;font-size:12px;color:var(--star);">⭐⭐⭐⭐⭐</span>
+              </div>
+              <p style="font-size:13px;color:var(--text);">"The trip planner is genius! Generated a perfect 4-day Sindhudurg plan."</p>
+            </div>
+            <div style="padding:14px;background:rgba(26,107,107,0.05);border-radius:10px;border-left:3px solid var(--accent);">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:700;">R</div>
+                <strong style="font-size:13px;">Rahul M.</strong>
+                <span style="margin-left:auto;font-size:12px;color:var(--star);">⭐⭐⭐⭐⭐</span>
+              </div>
+              <p style="font-size:13px;color:var(--text);">"Found a hidden beach I never knew existed! Booking Ramesh as guide was the best decision."</p>
+            </div>
+            <div style="padding:14px;background:rgba(26,107,107,0.05);border-radius:10px;border-left:3px solid var(--accent);">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:700;">A</div>
+                <strong style="font-size:13px;">Anjali K.</strong>
+                <span style="margin-left:auto;font-size:12px;color:var(--star);">⭐⭐⭐⭐☆</span>
+              </div>
+              <p style="font-size:13px;color:var(--text);">"Great platform overall. Would love an Android app for offline use!"</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="reveal" style="background:var(--primary-gradient);border-radius:var(--radius);padding:28px;text-align:center;">
+          <h4 style="color:white;margin-bottom:8px;">Ready to Explore?</h4>
+          <p style="color:rgba(255,255,255,0.8);font-size:13px;margin-bottom:16px;">Start your Konkan journey with a personalized itinerary.</p>
+          <a href="trip-planner.html" class="btn btn-gold btn-sm ripple">Plan My Trip →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">🧭 Konkan Navigator</div>
+  <div class="footer-tagline">Guiding Your Konkan Journey</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a><a href="explore.html">Explore</a><a href="guides.html">Guides</a>
+    <a href="trip-planner.html">Trip Planner</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Konkan Navigator. All rights reserved.</div>
+</footer>
+
+<div id="toast-container"></div>
+<script src="js/script.js"></script>
+<script>
+  // Enhanced star rating with label
+  const ratingLabels = ['', '😕 Poor', '😐 Fair', '🙂 Good', '😊 Very Good', '🤩 Excellent!'];
+  const starGroup = document.getElementById('star-group');
+  const ratingText = document.getElementById('rating-text');
+
+  document.querySelectorAll('.star-btn').forEach(btn => {
+    btn.addEventListener('mouseover', function() {
+      const val = parseInt(this.dataset.value);
+      document.querySelectorAll('.star-btn').forEach((s, i) => {
+        s.textContent = i < val ? '⭐' : '☆';
+      });
+      ratingText.textContent = ratingLabels[val] || '';
+    });
+    btn.addEventListener('mouseleave', function() {
+      const current = parseInt(document.querySelector('input[name="q4-hidden"]').value) || 0;
+      document.querySelectorAll('.star-btn').forEach((s, i) => {
+        s.textContent = i < current ? '⭐' : '☆';
+        s.classList.toggle('selected', i < current);
+      });
+      ratingText.textContent = current > 0 ? ratingLabels[current] : 'Click to rate';
+    });
+    btn.addEventListener('click', function() {
+      const val = parseInt(this.dataset.value);
+      document.querySelector('input[name="q4-hidden"]').value = val;
+      document.querySelectorAll('.star-btn').forEach((s, i) => {
+        s.textContent = i < val ? '⭐' : '☆';
+        s.classList.toggle('selected', i < val);
+      });
+      ratingText.textContent = ratingLabels[val] || '';
+    });
+  });
+  starGroup?.addEventListener('mouseleave', function() {
+    const current = parseInt(document.querySelector('input[name="q4-hidden"]').value) || 0;
+    ratingText.textContent = current > 0 ? ratingLabels[current] : 'Click to rate';
+  });
+
+  // Option item click highlight
+  document.querySelectorAll('.option-item').forEach(item => {
+    const input = item.querySelector('input');
+    if (!input) return;
+    item.addEventListener('click', function() {
+      if (input.type === 'radio') {
+        document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => {
+          r.closest('.option-item')?.classList.remove('selected-opt');
+        });
+        this.classList.add('selected-opt');
+      } else {
+        this.classList.toggle('selected-opt', input.checked);
+      }
+    });
+  });
+</script>
+</body>
+</html>

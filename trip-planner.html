@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip Planner – Konkan Navigator</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .planner-layout {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .planner-form-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 36px;
+      box-shadow: var(--shadow-md);
+      position: sticky;
+      top: 90px;
+    }
+    .planner-form-card h2 {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      color: var(--heading);
+    }
+    .planner-form-card > p {
+      color: var(--text);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    /* Interest Checkboxes */
+    .interests-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .interest-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--heading);
+    }
+    .interest-check:hover {
+      border-color: var(--accent);
+      background: rgba(26,107,107,0.04);
+    }
+    .interest-check input[type="checkbox"] {
+      display: none;
+    }
+    .interest-check.checked {
+      border-color: var(--accent);
+      background: rgba(26,107,107,0.08);
+      color: var(--accent);
+    }
+    .interest-check .check-icon {
+      font-size: 18px;
+    }
+
+    /* Empty state */
+    .planner-empty {
+      background: white;
+      border-radius: var(--radius);
+      padding: 60px 40px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      border: 2px dashed var(--border);
+    }
+    .planner-empty .empty-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .tips-section {
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-top: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .tip-item:last-child { border-bottom: none; }
+    .tip-item .tip-icon {
+      font-size: 20px; flex-shrink: 0; margin-top: 2px;
+    }
+
+    .budget-input-wrap {
+      position: relative;
+    }
+    .budget-input-wrap .currency {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 15px;
+    }
+    .budget-input-wrap input { padding-left: 36px !important; }
+
+    @media (max-width: 900px) {
+      .planner-layout { grid-template-columns: 1fr; }
+      .planner-form-card { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🧭</div>
+      <div class="logo-text">
+        <span>Konkan Navigator</span>
+        <span>Guiding Your Konkan Journey</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="guides.html">Guides</a></li>
+      <li><a href="trip-planner.html">Trip Planner</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="transport.html">Transport</a></li>
+      <li><a href="payment.html">Payment</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-icon-btn">🔔<span class="nav-bell-badge">3</span></button>
+      <a href="signin.html"><div class="nav-avatar">K</div></a>
+      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-mobile">
+    <a href="index.html">🏠 Home</a><a href="explore.html">🌍 Explore</a>
+    <a href="guides.html">🧑‍🤝‍🧑 Guides</a><a href="trip-planner.html">🧳 Trip Planner</a>
+    <a href="about.html">ℹ️ About</a><a href="contact.html">📞 Contact</a>
+    <a href="feedback.html">📝 Feedback</a>
+    <a href="transport.html">🚌 Transport</a><a href="payment.html">💳 Payment</a>
+    <a href="signin.html" style="background:var(--primary-gradient);color:white;justify-content:center;border-radius:50px;margin-top:8px;">Sign In →</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero" style="background:linear-gradient(135deg,#1a4a8a,#1a6b6b);">
+  <div class="container">
+    <span class="badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">🧳 Smart Planning</span>
+    <h1>Plan Your<br>Perfect Konkan Trip</h1>
+    <p>Answer a few questions and get a personalized day-by-day itinerary in seconds.</p>
+  </div>
+</div>
+
+<!-- PLANNER SECTION -->
+<section class="section">
+  <div class="container">
+    <div class="planner-layout">
+
+      <!-- FORM -->
+      <div class="planner-form-card reveal">
+        <h2>🗺️ Build My Itinerary</h2>
+        <p>Tell us about your trip and we'll craft the perfect plan.</p>
+
+        <form id="trip-form" novalidate>
+
+          <!-- Budget -->
+          <div class="form-group">
+            <label for="budget">Total Budget (₹)</label>
+            <div class="budget-input-wrap">
+              <span class="currency">₹</span>
+              <input type="number" id="budget" name="budget" class="form-control"
+                placeholder="e.g. 15000" min="1000" max="500000" required />
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline btn-sm" onclick="setBudget(5000)">₹5K</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="setBudget(10000)">₹10K</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="setBudget(20000)">₹20K</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="setBudget(50000)">₹50K</button>
+            </div>
+          </div>
+
+          <!-- Days -->
+          <div class="form-group">
+            <label for="days">Number of Days</label>
+            <select id="days" name="days" class="form-control" required>
+              <option value="">Select duration</option>
+              <option value="1">1 Day – Quick Getaway</option>
+              <option value="2">2 Days – Weekend Escape</option>
+              <option value="3">3 Days – Short Break</option>
+              <option value="4">4 Days – Mini Vacation</option>
+              <option value="5">5 Days – Full Konkan Trail</option>
+              <option value="7">7 Days – Deep Konkan Dive</option>
+              <option value="10">10 Days – Complete Explorer</option>
+            </select>
+          </div>
+
+          <!-- Interests -->
+          <div class="form-group">
+            <label>Interests (Select all that apply)</label>
+            <div class="interests-grid">
+              <label class="interest-check" id="int-beach">
+                <input type="checkbox" name="interest" value="beach" />
+                <span class="check-icon">🏖️</span>
+                <span>Beaches</span>
+              </label>
+              <label class="interest-check" id="int-heritage">
+                <input type="checkbox" name="interest" value="heritage" />
+                <span class="check-icon">🏯</span>
+                <span>Heritage</span>
+              </label>
+              <label class="interest-check" id="int-food">
+                <input type="checkbox" name="interest" value="food" />
+                <span class="check-icon">🍱</span>
+                <span>Food</span>
+              </label>
+              <label class="interest-check" id="int-adventure">
+                <input type="checkbox" name="interest" value="adventure" />
+                <span class="check-icon">🧗</span>
+                <span>Adventure</span>
+              </label>
+              <label class="interest-check" id="int-nature">
+                <input type="checkbox" name="interest" value="nature" />
+                <span class="check-icon">🌿</span>
+                <span>Nature</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Travel Style -->
+          <div class="form-group">
+            <label for="travel-style">Travel Style</label>
+            <select id="travel-style" class="form-control">
+              <option value="relaxed">😌 Relaxed – Take it slow</option>
+              <option value="moderate">🚶 Moderate – Good balance</option>
+              <option value="packed">🏃 Packed – See everything!</option>
+            </select>
+          </div>
+
+          <!-- Group Type -->
+          <div class="form-group">
+            <label for="group-type">Who's Traveling?</label>
+            <select id="group-type" class="form-control">
+              <option value="solo">🧍 Solo Explorer</option>
+              <option value="couple">💑 Couple</option>
+              <option value="family">👨‍👩‍👧‍👦 Family with Kids</option>
+              <option value="friends">👥 Group of Friends</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg ripple" style="width:100%;justify-content:center;">
+            ✨ Generate My Itinerary
+          </button>
+        </form>
+      </div>
+
+      <!-- RIGHT: Result / Empty -->
+      <div>
+        <!-- Empty State (shown before generation) -->
+        <div id="planner-empty-state" class="planner-empty reveal">
+          <div class="empty-icon">🗺️</div>
+          <h3>Your Itinerary Awaits!</h3>
+          <p style="max-width:320px;margin:0 auto;color:var(--text);">Fill in your preferences on the left and click "Generate My Itinerary" to get a personalized day-by-day Konkan travel plan.</p>
+          <div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+            <span style="background:rgba(26,107,107,0.08);padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;color:var(--accent);">🏖️ Beaches</span>
+            <span style="background:rgba(26,107,107,0.08);padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;color:var(--accent);">🏯 Forts</span>
+            <span style="background:rgba(26,107,107,0.08);padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;color:var(--accent);">🍱 Food</span>
+            <span style="background:rgba(26,107,107,0.08);padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;color:var(--accent);">🌿 Nature</span>
+          </div>
+        </div>
+
+        <!-- Itinerary Result (injected by JS) -->
+        <div id="itinerary-result"></div>
+
+        <!-- Tips Section -->
+        <div class="tips-section reveal" style="margin-top:24px;">
+          <h4 style="color:var(--heading);margin-bottom:4px;">💡 Konkan Travel Tips</h4>
+          <p style="font-size:13px;color:var(--text);margin-bottom:16px;">Expert advice for the best Konkan experience</p>
+          <div class="tip-item">
+            <span class="tip-icon">🌦️</span>
+            <div><strong style="font-size:14px;color:var(--heading);">Best Season: Oct–Feb</strong><br><span style="color:var(--text);">Post-monsoon brings greenery; winter is perfect for beaches and forts.</span></div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">🚗</span>
+            <div><strong style="font-size:14px;color:var(--heading);">Getting Around</strong><br><span style="color:var(--text);">Rent a bike or car for maximum flexibility. State buses connect major towns.</span></div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">💵</span>
+            <div><strong style="font-size:14px;color:var(--heading);">Budget: ₹1500–3000/day</strong><br><span style="color:var(--text);">Homestays are affordable and give authentic local experiences.</span></div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">📱</span>
+            <div><strong style="font-size:14px;color:var(--heading);">Connectivity</strong><br><span style="color:var(--text);">Download offline maps. Some coastal areas have limited network coverage.</span></div>
+          </div>
+          <div class="tip-item">
+            <span class="tip-icon">🍽️</span>
+            <div><strong style="font-size:14px;color:var(--heading);">Must-Try Foods</strong><br><span style="color:var(--text);">Sol kadhi, Malvani fish curry, kombdi wade, and fresh coconut water at every stop.</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">🧭 Konkan Navigator</div>
+  <div class="footer-tagline">Guiding Your Konkan Journey</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a><a href="explore.html">Explore</a><a href="guides.html">Guides</a>
+    <a href="trip-planner.html">Trip Planner</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Konkan Navigator. All rights reserved.</div>
+</footer>
+
+<div id="toast-container"></div>
+<script src="js/script.js"></script>
+<script>
+  // Budget quick-set
+  function setBudget(val) {
+    document.getElementById('budget').value = val;
+  }
+
+  // Interest checkbox toggle
+  document.querySelectorAll('.interest-check').forEach(label => {
+    label.addEventListener('click', function() {
+      this.classList.toggle('checked');
+    });
+    // Sync with actual checkbox
+    const checkbox = label.querySelector('input[type="checkbox"]');
+    checkbox.addEventListener('change', function() {
+      label.classList.toggle('checked', this.checked);
+    });
+  });
+
+  // Hide empty state when itinerary is generated
+  const origGenerate = window.initTripPlanner;
+  document.getElementById('trip-form')?.addEventListener('submit', function() {
+    setTimeout(() => {
+      const result = document.getElementById('itinerary-result');
+      const empty  = document.getElementById('planner-empty-state');
+      if (result && result.innerHTML.trim()) {
+        if (empty) empty.style.display = 'none';
+      }
+    }, 200);
+  });
+</script>
+</body>
+</html>
