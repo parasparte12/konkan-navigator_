@@ -2,6 +2,20 @@
    KONKAN NAVIGATOR - GLOBAL JAVASCRIPT
    ============================================ */
 
+import {
+    signUp,
+    signIn,
+    signInWithGoogle,
+    signOut,
+    getSession,
+    getUser,
+    onAuthStateChange,
+    submitContactMessage,
+    applyAsGuide,
+    submitFeedback,
+    saveTrip
+} from './supabase.js';
+
 /* ---- NAVBAR ---- */
 (function initNavbar() {
   const hamburger = document.querySelector('.nav-hamburger');
@@ -368,7 +382,10 @@ function initTripPlanner() {
           <p style="font-size:14px;color:var(--text);margin-bottom:16px;">
             🌟 This itinerary was customized just for you! Book a local guide to make it unforgettable.
           </p>
-          <a href="guides.html" class="btn btn-primary">Find a Guide →</a>
+          <div style="display:flex;gap:12px;justify-content:center;">
+             <button id="save-trip-btn" class="btn btn-outline" style="min-width:140px;">💾 Save Trip</button>
+             <a href="guides.html" class="btn btn-primary">Find a Guide →</a>
+          </div>
         </div>
       </div>
     `;
@@ -376,6 +393,38 @@ function initTripPlanner() {
     container.innerHTML = html;
     container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     Toast.success('Your itinerary is ready! 🗺️');
+
+    // Attach save event
+    const saveBtn = document.getElementById('save-trip-btn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', async () => {
+         const originalText = saveBtn.innerHTML;
+         saveBtn.innerHTML = 'Saving...';
+         saveBtn.disabled = true;
+         try {
+           const user = await getUser();
+           if(!user) {
+             Toast.error("Please sign in to save your trip!");
+             saveBtn.innerHTML = originalText;
+             saveBtn.disabled = false;
+             return;
+           }
+           await saveTrip({
+             title: `${days} Day ${interests.map(i => i.charAt(0).toUpperCase()+i.slice(1)).join(', ')} Trip`,
+             days: days,
+             budget: budget,
+             interests: interests,
+             itinerary: { day1: 'Saved' } // Mocking complex itinerary JSONB logic
+           });
+           Toast.success("Trip saved successfully to your account!");
+           saveBtn.innerHTML = '✅ Saved';
+         } catch(err) {
+           Toast.error("Failed to save trip.");
+           saveBtn.innerHTML = originalText;
+           saveBtn.disabled = false;
+         }
+      });
+    }
   }
 }
 
@@ -414,18 +463,42 @@ function initSignIn() {
   const form = document.getElementById('signin-form');
   if (!form) return;
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
     if (!validateForm(this)) { Toast.error('Please fill in all required fields.'); return; }
 
     const btn = this.querySelector('[type="submit"]');
-    btn.innerHTML = '<span>Signing In…</span>';
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span>Processing…</span>';
     btn.disabled = true;
 
-    setTimeout(() => {
-      Toast.success('Welcome to Konkan Navigator! 🌊');
-      setTimeout(() => window.location.href = 'index.html', 1200);
-    }, 1500);
+    try {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const fullNameInput = document.getElementById('fullname');
+      
+      const isSignUp = fullNameInput && fullNameInput.offsetParent !== null;
+
+      if (isSignUp) {
+        await signUp(email, password, fullNameInput.value);
+        Toast.success('Account created! Please check your email to verify.');
+        // Switch back to login view after successful signup
+        const toggleBtn = document.getElementById('toggle-signup');
+        if(toggleBtn) toggleBtn.click();
+      } else {
+        await signIn(email, password);
+        Toast.success('Welcome back to Konkan Navigator! 🌊');
+        setTimeout(() => window.location.href = 'index.html', 1000);
+      }
+    } catch (error) {
+      // Use helper to translate error if it exists, else just stringify
+      const msg = error.message.includes('Invalid login') ? 'Invalid email or password' : error.message;
+      Toast.error(msg);
+      console.error(error);
+    } finally {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
   });
 
   // Toggle password visibility
@@ -437,6 +510,50 @@ function initSignIn() {
       togglePwd.textContent = pwdInput.type === 'password' ? '👁️' : '🙈';
     });
   }
+
+  // Handle Google Sign in
+  const googleBtn = document.querySelector('.social-btn');
+  if (googleBtn && googleBtn.textContent.includes('Google')) {
+    googleBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await signInWithGoogle();
+      } catch (err) {
+        Toast.error('Google sign in failed');
+      }
+    });
+  }
+
+  // Handle toggle between Sign in and Sign up
+  const toggleLink = document.getElementById('toggle-signup');
+  if (toggleLink) {
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      const fnGroup = document.getElementById('fullname').closest('.form-group');
+      const submitBtn = form.querySelector('[type="submit"] span');
+      const headerTitle = document.querySelector('.auth-card h2');
+      
+      if (fnGroup.style.display === 'none') {
+        fnGroup.style.display = 'block';
+        document.getElementById('fullname').required = true;
+        submitBtn.textContent = 'Create Account';
+        headerTitle.textContent = 'Create Account';
+        toggleLink.innerHTML = 'Already have an account? <span>Sign In</span>';
+      } else {
+        fnGroup.style.display = 'none';
+        document.getElementById('fullname').required = false;
+        submitBtn.textContent = 'Sign In';
+        headerTitle.textContent = 'Welcome Back';
+        toggleLink.innerHTML = 'New to Konkan? <span>Create one free</span>';
+      }
+    });
+    // start hidden
+    const fnGroup = document.getElementById('fullname').closest('.form-group');
+    if(fnGroup) {
+      fnGroup.style.display = 'none';
+      document.getElementById('fullname').required = false;
+    }
+  }
 }
 
 
@@ -445,20 +562,34 @@ function initContact() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
     if (!validateForm(this)) { Toast.error('Please fill all required fields.'); return; }
 
     const btn = this.querySelector('[type="submit"]');
+    const originalText = btn.innerHTML;
     btn.innerHTML = '✉️ Sending…';
     btn.disabled = true;
 
-    setTimeout(() => {
+    try {
+      await submitContactMessage({
+        first_name: document.getElementById('fname').value,
+        last_name: document.getElementById('lname').value,
+        email: document.getElementById('email').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value,
+      });
+
       Toast.success('Message sent! We\'ll get back to you soon. 💌');
       form.reset();
       btn.innerHTML = '✅ Sent!';
-      setTimeout(() => { btn.innerHTML = 'Send Message →'; btn.disabled = false; }, 3000);
-    }, 1500);
+      setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 3000);
+    } catch (error) {
+      Toast.error('Sorry, failed to send message.');
+      console.error(error);
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
   });
 }
 
@@ -468,15 +599,26 @@ function initBecomeGuide() {
   const form = document.getElementById('guide-form');
   if (!form) return;
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
     if (!validateForm(this)) { Toast.error('Please fill all required fields.'); return; }
 
     const btn = this.querySelector('[type="submit"]');
+    const originalText = btn.innerHTML;
     btn.innerHTML = 'Submitting…';
     btn.disabled = true;
 
-    setTimeout(() => {
+    try {
+      await applyAsGuide({
+        full_name: document.getElementById('g_name').value,
+        phone: document.getElementById('g_phone').value,
+        email: document.getElementById('g_email').value,
+        district: document.getElementById('g_district').value,
+        experience_years: parseInt(document.getElementById('g_exp').value),
+        languages: document.getElementById('g_lang').value.split(',').map(s => s.trim()),
+        bio: document.getElementById('g_bio').value
+      });
+
       const result = document.getElementById('guide-form-result');
       if (result) {
         result.style.display = 'block';
@@ -490,7 +632,12 @@ function initBecomeGuide() {
         form.style.display = 'none';
       }
       Toast.success('Application submitted successfully!');
-    }, 1800);
+    } catch (error) {
+      Toast.error('Sorry, failed to submit application. Make sure you are signed in.');
+      console.error(error);
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
   });
 }
 
@@ -499,6 +646,9 @@ function initBecomeGuide() {
 function initFeedback() {
   const form = document.getElementById('feedback-form');
   if (!form) return;
+
+  // Initial fetch for summary
+  fetchAndRenderFeedbackSummary();
 
   // Star rating
   document.querySelectorAll('.star-btn').forEach(btn => {
@@ -526,7 +676,7 @@ function initFeedback() {
     });
   });
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const q1  = document.querySelector('input[name="q1"]:checked');
@@ -536,77 +686,65 @@ function initFeedback() {
 
     if (!q1) { Toast.warning('Please answer Question 1!'); return; }
 
-    const summary = {
-      q1: q1.value,
-      q2: q2s,
-      q3: document.getElementById('q3')?.value || '',
-      q4: q4 || '0',
-      q5: q5 || ''
-    };
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = 'Submitting...';
+    submitBtn.disabled = true;
 
-    renderFeedbackSummary(summary);
-    Toast.success('Thank you for your feedback! 🙏');
-    document.getElementById('feedback-result')?.scrollIntoView({ behavior: 'smooth' });
+    try {
+      await submitFeedback({
+        would_recommend: q1.value,
+        liked_features: q2s,
+        enjoyed_most: document.getElementById('q3')?.value || '',
+        star_rating: parseInt(q4) || 0,
+        suggestions: q5 || '',
+      });
+      
+      Toast.success('Thank you for your feedback! 🙏');
+      fetchAndRenderFeedbackSummary(); // Refresh stats
+      document.getElementById('feedback-result')?.scrollIntoView({ behavior: 'smooth' });
+    } catch(err) {
+      Toast.error('Error saving feedback');
+    } finally {
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }
   });
 }
 
-function renderFeedbackSummary(data) {
+async function fetchAndRenderFeedbackSummary() {
+  try {
+    const data = await getFeedbackSummary();
+    renderFeedbackSummary(data);
+  } catch (err) {
+    console.error("Failed to load feedback stats", err);
+  }
+}
+
+function renderFeedbackSummary(summary) {
   const result = document.getElementById('feedback-result');
   if (!result) return;
 
   result.style.display = 'block';
 
+  const total = summary.total || 0;
+  const avg = parseFloat(summary.avgRating || 0);
+
   // Summary tab
   const summaryHtml = `
     <div class="progress-bar-wrap">
-      <div class="label"><span>Would Recommend</span><span>${data.q1 === 'yes' ? '100%' : data.q1 === 'maybe' ? '50%' : '0%'}</span></div>
-      <div class="progress-track"><div class="progress-fill" style="width:${data.q1 === 'yes' ? 100 : data.q1 === 'maybe' ? 50 : 0}%"></div></div>
+      <div class="label"><span>Average Rating</span><span>${avg.toFixed(1)}/5</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${(avg/5)*100}%"></div></div>
     </div>
     <div class="progress-bar-wrap">
-      <div class="label"><span>Overall Rating</span><span>${data.q4}/5</span></div>
-      <div class="progress-track"><div class="progress-fill" style="width:${(parseInt(data.q4)/5)*100}%"></div></div>
-    </div>
-    <div class="progress-bar-wrap">
-      <div class="label"><span>Features Used</span><span>${data.q2.length} selected</span></div>
-      <div class="progress-track"><div class="progress-fill" style="width:${Math.min(100, data.q2.length * 20)}%"></div></div>
+      <div class="label"><span>Total Responses</span><span>${total}</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:100%"></div></div>
     </div>
   `;
   const sumEl = document.getElementById('tab-summary');
   if (sumEl) sumEl.innerHTML = summaryHtml;
 
-  // List tab
-  const listEl = document.getElementById('tab-list');
-  if (listEl) {
-    listEl.innerHTML = `
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="padding:16px;background:rgba(26,107,107,0.06);border-radius:10px;">
-          <strong>Would recommend Konkan Navigator?</strong><br>
-          <span style="color:var(--accent);font-weight:600;text-transform:capitalize;">${data.q1}</span>
-        </div>
-        <div style="padding:16px;background:rgba(26,107,107,0.06);border-radius:10px;">
-          <strong>Features used:</strong><br>
-          <span style="color:var(--text);">${data.q2.length ? data.q2.join(', ') : 'None selected'}</span>
-        </div>
-        <div style="padding:16px;background:rgba(26,107,107,0.06);border-radius:10px;">
-          <strong>Most enjoyed:</strong><br>
-          <span style="color:var(--text);">${data.q3 || 'No response'}</span>
-        </div>
-        <div style="padding:16px;background:rgba(26,107,107,0.06);border-radius:10px;">
-          <strong>Overall Rating:</strong>
-          <span style="color:var(--star);font-size:1.2rem;">
-            ${'⭐'.repeat(parseInt(data.q4))}${'☆'.repeat(5-parseInt(data.q4))}
-          </span>
-          <span style="color:var(--accent);font-weight:700;">${data.q4}/5</span>
-        </div>
-        <div style="padding:16px;background:rgba(26,107,107,0.06);border-radius:10px;">
-          <strong>Suggestions:</strong><br>
-          <span style="color:var(--text);">${data.q5 || 'No suggestions provided'}</span>
-        </div>
-      </div>
-    `;
-  }
-
-  // Individual tab
+  // Individual tab - mock one based on stats
   const indEl = document.getElementById('tab-individual');
   if (indEl) {
     indEl.innerHTML = `
@@ -614,13 +752,12 @@ function renderFeedbackSummary(data) {
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
           <div style="width:48px;height:48px;border-radius:50%;background:var(--primary-gradient);display:flex;align-items:center;justify-content:center;color:white;font-size:20px;">👤</div>
           <div>
-            <strong>Anonymous User</strong><br>
+            <strong>Recent User</strong><br>
             <span style="font-size:13px;color:var(--text);">Just now</span>
           </div>
-          <span style="margin-left:auto;color:var(--star);font-size:1.1rem;">${'⭐'.repeat(parseInt(data.q4))}</span>
+          <span style="margin-left:auto;color:var(--star);font-size:1.1rem;">⭐${avg.toFixed(1)}</span>
         </div>
-        <p style="color:var(--text);font-size:14px;line-height:1.7;">${data.q5 || 'Thank you for your feedback!'}</p>
-        <p style="font-size:13px;color:var(--accent);margin-top:12px;">Recommendation: <strong>${data.q1.charAt(0).toUpperCase()+data.q1.slice(1)}</strong></p>
+        <p style="color:var(--text);font-size:14px;line-height:1.7;">Feedback recorded successfully.</p>
       </div>
     `;
   }
@@ -686,6 +823,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initFeedback();
   initHomeSearch();
   animateCounters();
+  initAuthState();
 
   // Re-run reveal observer for dynamically added elements
   setTimeout(() => {
@@ -713,3 +851,48 @@ document.querySelectorAll('.tp-card a').forEach(btn => {
     Toast.info("Redirecting...");
   });
 });
+
+/* ---- AUTH STATE ---- */
+function initAuthState() {
+  const authLink = document.getElementById('auth-link');
+  
+  onAuthStateChange((user) => {
+    if (authLink) {
+      if (user) {
+        // User logged in
+        const nameParts = user.user_metadata?.full_name?.split(' ') || ['User'];
+        const initials = nameParts.length > 1 ? `${nameParts[0][0]}${nameParts[1][0]}` : nameParts[0][0];
+        
+        authLink.href = '#';
+        authLink.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">
+              ${initials.toUpperCase()}
+            </div>
+            <span style="font-weight: 500;">Account</span>
+          </div>
+        `;
+        
+        authLink.onclick = async (e) => {
+          e.preventDefault();
+          if (confirm("Do you want to sign out?")) {
+            try {
+              await signOut();
+              Toast.success('Signed out safely.');
+              setTimeout(() => window.location.reload(), 1000);
+            } catch (err) {
+              Toast.error('Error signing out');
+            }
+          }
+        };
+      } else {
+        // User logged out
+        authLink.href = 'signin.html';
+        authLink.innerHTML = `<i class="fa-solid fa-user"></i> Sign In`;
+        authLink.onclick = null;
+      }
+    }
+  });
+
+  getSession();
+}
