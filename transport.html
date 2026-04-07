@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transport – Konkan Navigator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a6b6b;
+      --secondary: #2d7a4a;
+      --primary-gradient: linear-gradient(135deg, #1a6b6b 0%, #2d7a4a 100%);
+      --accent: #2d7a4a;
+      --heading: #1a1a1a;
+      --text: #4a4a4a;
+      --white: #ffffff;
+      --border: #e1e1e1;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --transition: all 0.3s ease;
+      --bg-main: #f8f9fa;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text); line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* Navigation */
+    .navbar { background: var(--white); padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: var(--shadow-sm); }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .nav-menu { display: flex; list-style: none; gap: 1.5rem; }
+    .nav-link { text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.95rem; transition: var(--transition); }
+    .nav-link:hover, .nav-link.active { color: var(--accent); }
+
+    /* Hero */
+    .hero { background: var(--primary-gradient); color: var(--white); padding: 120px 0 80px; text-align: center; }
+    .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; font-family: 'Poppins', sans-serif; }
+    .hero p { font-size: 1.1rem; opacity: 0.9; }
+
+    /* Search Card */
+    .transport-search { background: var(--white); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-md); margin-top: -50px; position: relative; }
+    .search-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) auto; gap: 1.5rem; align-items: end; }
+    .form-group { display: flex; flex-direction: column; gap: 0.6rem; }
+    .form-group label { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: #666; }
+    .form-control { padding: 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; outline: none; transition: border-color 0.3s; }
+    .form-control:focus { border-color: var(--accent); }
+
+    /* Buttons */
+    .btn-search { background: var(--secondary); color: var(--white); border: none; padding: 0.8rem 2rem; border-radius: var(--radius-sm); cursor: pointer; font-weight: 700; transition: var(--transition); height: 50px; }
+    .btn-search:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+
+    /* Filters */
+    .filters-section { margin-top: 2rem; display: flex; gap: 1rem; align-items: center; background: var(--white); padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+    .filter-btn { padding: 0.5rem 1.2rem; border: 1px solid var(--border); background: var(--white); border-radius: 20px; cursor: pointer; font-weight: 500; transition: var(--transition); }
+    .filter-btn.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
+
+    /* Results */
+    .results-container { margin: 2rem 0; }
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .route-grid { display: grid; gap: 1.5rem; }
+    
+    .route-card { background: var(--white); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); border-left: 6px solid var(--accent); transition: var(--transition); animation: fadeIn 0.5s ease; }
+    .route-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    
+    .route-header { display: flex; justify-content: space-between; margin-bottom: 1.2rem; }
+    .route-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1.5rem; background: #f9fbf9; padding: 1.2rem; border-radius: var(--radius-sm); }
+    .detail-item span { display: block; font-size: 0.75rem; color: #888; text-transform: uppercase; margin-bottom: 4px; }
+    .detail-item strong { font-size: 1.1rem; color: var(--heading); }
+
+    .route-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee; }
+    .price-tag { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+    .book-btn { background: var(--primary-gradient); color: var(--white); border: none; padding: 0.7rem 1.5rem; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; transition: var(--transition); }
+    
+    .status-badge { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .on-time { background: #2ecc71; color: #27ae60; }
+    .delayed { background: #f1c40f; color: #d35400; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 768px) {
+      .search-form { grid-template-columns: 1fr; }
+      .nav-menu { display: none; } /* Mobile menu simplified for now */
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">🧭 Konkan Navigator</a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="explore.html" class="nav-link">Explore</a></li>
+        <li><a href="guides.html" class="nav-link">Guides</a></li>
+        <li><a href="trip-planner.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="transport.html" class="nav-link active">Transport</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+         <li><a href="payment.html" class="nav-link">Payment</a></li>
+          <li><a href="hidden-gems.html" class="nav-link">Hidden Gems</a></li>
+      </ul>
+    </div>
+    
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <h1>Transport & Routes</h1>
+      <p>Your guide to trains, buses, and ferries across the Konkan region</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="transport-search">
+      <form id="searchForm" class="search-form">
+        <div class="form-group">
+          <label>From</label>
+          <select class="form-control" id="fromLoc">
+            <option value="Mumbai">Mumbai</option>
+            <option value="Pune">Pune</option>
+            <option value="Ratnagiri">Ratnagiri</option>
+            <option value="Goa">Goa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>To</label>
+          <select class="form-control" id="toLoc">
+            <option value="Ratnagiri">Ratnagiri</option>
+            <option value="Sindhudurg">Sindhudurg</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Ganpatipule">Ganpatipule</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Travel Date</label>
+          <input type="date" class="form-control" id="travelDate">
+        </div>
+        <button type="submit" class="btn-search">Search Routes</button>
+      </form>
+    </section>
+
+    <section class="filters-section" id="filterBar" style="display: none;">
+      <span style="font-weight: 700;">Filter:</span>
+      <button class="filter-btn active" onclick="filterBy('all', this)">All</button>
+      <button class="filter-btn" onclick="filterBy('Train', this)">🚂 Train</button>
+      <button class="filter-btn" onclick="filterBy('Bus', this)">🚌 Bus</button>
+    </section>
+
+    <section class="results-container" id="resultsSection" style="display: none;">
+      <div class="results-header">
+        <h3 id="countText">Available Routes</h3>
+        <select class="form-control" style="width: auto; padding: 5px;" onchange="sortRoutes(this.value)">
+          <option value="price">Cheapest First</option>
+          <option value="time">Fastest First</option>
+        </select>
+      </div>
+      <div id="routeGrid" class="route-grid"></div>
+    </section>
+
+    <div id="noResults" style="display:none; text-align: center; padding: 50px;">
+      <p style="font-size: 1.2rem; color: #888;">No routes found for this selection. Try Mumbai to Ratnagiri!</p>
+    </div>
+  </main>
+
+  <script>
+    // 1. Data Store
+    const routes = [
+      { id: 101, from: "Mumbai", to: "Ratnagiri", mode: "Train", dep: "05:30 AM", dur: "6h 15m", price: 450, status: "on-time", type: "Exp" },
+      { id: 102, from: "Mumbai", to: "Ratnagiri", mode: "Bus", dep: "09:00 PM", dur: "9h 30m", price: 850, status: "on-time", type: "AC Sleeper" },
+      { id: 103, from: "Pune", to: "Ratnagiri", mode: "Bus", dep: "07:30 AM", dur: "7h 00m", price: 650, status: "delayed", type: "Semi-Luxury" },
+      { id: 104, from: "Ratnagiri", to: "Mumbai", mode: "Train", dep: "02:15 PM", dur: "6h 45m", price: 450, status: "on-time", type: "Exp" },
+      { id: 105, from: "Mumbai", to: "Sindhudurg", mode: "Train", dep: "11:00 PM", dur: "8h 20m", price: 520, status: "on-time", type: "SF Exp" }
+    ];
+
+    let currentResults = [];
+
+    // 2. Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        // Set default date to today
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('travelDate');
+        if(dateInput) dateInput.value = today;
+
+        const form = document.getElementById('searchForm');
+        if(form) {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                searchRoutes();
+            });
+        }
+    });
+
+    function searchRoutes() {
+        const from = document.getElementById('fromLoc').value;
+        const to = document.getElementById('toLoc').value;
+        
+        currentResults = routes.filter(r => r.from === from && r.to === to);
+        
+        const filterBar = document.getElementById('filterBar');
+        const resultsSection = document.getElementById('resultsSection');
+        
+        if(filterBar) filterBar.style.display = 'flex';
+        if(resultsSection) resultsSection.style.display = 'block';
+        
+        displayResults(currentResults);
+    }
+
+    function displayResults(data) {
+        const grid = document.getElementById('routeGrid');
+        const empty = document.getElementById('noResults');
+        const count = document.getElementById('countText');
+
+        if (!grid) return;
+
+        if (data.length === 0) {
+            grid.innerHTML = "";
+            if(empty) empty.style.display = "block";
+            if(count) count.textContent = "0 Routes Found";
+            return;
+        }
+
+        if(empty) empty.style.display = "none";
+        if(count) count.textContent = `${data.length} Routes Available`;
+        
+        grid.innerHTML = data.map(r => `
+            <div class="route-card">
+                <div class="route-header">
+                    <strong style="font-size: 1.2rem;">${r.from} → ${r.to}</strong>
+                    <span class="status-badge ${r.status}">
+                        <span class="dot ${r.status}"></span> ${r.status.toUpperCase()}
+                    </span>
+                </div>
+                <div class="route-details">
+                    <div class="detail-item"><span>Mode</span><strong>${r.mode} (${r.type})</strong></div>
+                    <div class="detail-item"><span>Departure</span><strong>${r.dep}</strong></div>
+                    <div class="detail-item"><span>Duration</span><strong>${r.dur}</strong></div>
+                </div>
+                <div class="route-footer">
+                    <div class="price-tag">₹${r.price}</div>
+                    <button class="book-btn" onclick="goToPayment(${r.id})">Book Now</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterBy(mode, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const from = document.getElementById('fromLoc').value;
+        const to = document.getElementById('toLoc').value;
+        let baseSearch = routes.filter(r => r.from === from && r.to === to);
+        
+        if (mode !== 'all') {
+            baseSearch = baseSearch.filter(r => r.mode === mode);
+        }
+        displayResults(baseSearch);
+    }
+
+    function goToPayment(id) {
+        const selected = routes.find(r => r.id === id);
+        
+        // --- CRITICAL FIX ---
+        // We wrap the selected route in a 'transport' object inside 'bookingData'
+        // This is exactly what your Payment page is looking for.
+        const dataToSave = {
+            transport: selected
+        };
+        
+        localStorage.setItem('bookingData', JSON.stringify(dataToSave));
+        
+        // Redirect to payment page
+        window.location.href = 'payment.html';
+    }
+
+    function sortRoutes(criteria) {
+        if (criteria === 'price') {
+            currentResults.sort((a, b) => a.price - b.price);
+        } else {
+            currentResults.sort((a, b) => a.dur.localeCompare(b.dur));
+        }
+        displayResults(currentResults);
+    }
+</script>
+</body>
+</html>

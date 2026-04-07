@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About – Konkan Navigator</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .story-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .story-img {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .story-img img { width: 100%; height: 420px; object-fit: cover; }
+    .story-img-badge {
+      position: absolute; bottom: 24px; left: 24px;
+      background: white;
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: var(--shadow-md);
+    }
+    .story-img-badge .num { font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .story-img-badge p { font-size: 13px; color: var(--text); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      border-bottom: 4px solid transparent;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-md);
+      border-bottom-color: var(--accent);
+    }
+    .feature-icon {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      background: var(--primary-gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 24px rgba(26,107,107,0.25);
+    }
+    .feature-card h3 { margin-bottom: 10px; font-size: 1.05rem; }
+    .feature-card p  { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 28px;
+    }
+    .team-card {
+      text-align: center;
+      padding: 28px 16px;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .team-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      overflow: hidden;
+      border: 3px solid var(--accent);
+    }
+    .team-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .team-card h4 { margin-bottom: 4px; }
+    .team-card .role { font-size: 13px; color: var(--accent); font-weight: 600; }
+    .team-card .bio { font-size: 13px; color: var(--text); margin-top: 8px; }
+
+    .milestones {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
+    }
+    .milestone {
+      text-align: center;
+      padding: 24px;
+      background: rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .milestone .year {
+      font-size: 1.5rem; font-weight: 800;
+      color: var(--cta-gold); margin-bottom: 4px;
+    }
+    .milestone p { font-size: 13px; color: rgba(255,255,255,0.85); }
+
+    @media (max-width: 768px) {
+      .story-layout { grid-template-columns: 1fr; }
+      .story-img img { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon">🧭</div>
+      <div class="logo-text">
+        <span>Konkan Navigator</span>
+        <span>Guiding Your Konkan Journey</span>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="explore.html">Explore</a></li>
+      <li><a href="guides.html">Guides</a></li>
+      <li><a href="trip-planner.html">Trip Planner</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="transport.html">Transport</a></li>
+      <li><a href="payment.html">Payment</a></li>
+       <li><a href="hidden-gems.html">Hidden Gems</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-icon-btn">🔔<span class="nav-bell-badge">3</span></button>
+      <a href="signin.html"><div class="nav-avatar">K</div></a>
+      <button class="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="nav-mobile">
+    <a href="index.html">🏠 Home</a><a href="explore.html">🌍 Explore</a>
+    <a href="guides.html">🧑‍🤝‍🧑 Guides</a><a href="trip-planner.html">🧳 Trip Planner</a>
+    <a href="about.html">ℹ️ About</a><a href="contact.html">📞 Contact</a>
+    <a href="feedback.html">📝 Feedback</a>
+    <a href="transport.html">🚌 Transport</a><a href="payment.html">💳 Payment</a>
+      <a href="hidden-gems.html">💎 Hidden Gems</a>
+    <a href="signin.html" style="background:var(--primary-gradient);color:white;justify-content:center;border-radius:50px;margin-top:8px;">Sign In →</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <span class="badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">ℹ️ Our Story</span>
+    <h1>About Konkan Navigator</h1>
+    <p>Born from a love of Konkan, built to help you discover its magic.</p>
+  </div>
+</div>
+
+<!-- OUR STORY -->
+<section class="section">
+  <div class="container">
+    <div class="story-layout reveal">
+      <div class="story-img">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80" alt="Konkan Coast" loading="lazy" />
+        <div class="story-img-badge">
+          <div class="num">5+ Years</div>
+          <p>Exploring Konkan's hidden gems</p>
+        </div>
+      </div>
+      <div>
+        <span class="badge">🌊 Who We Are</span>
+        <h2>We Are <span class="text-gradient">Konkan Lovers</span></h2>
+        <div class="divider" style="margin:12px 0 20px;"></div>
+        <p style="margin-bottom:16px;">
+          Konkan Navigator was born in 2020 when a group of friends from Mumbai took their first real road trip down the coastal highway. We were stunned — hidden beaches with zero crowds, ancient sea forts, friendly fishing villages, and food that we still dream about.
+        </p>
+        <p style="margin-bottom:16px;">
+          We realized there was no platform that truly captured the magic of Konkan. Travel apps showed only the famous spots. The real Konkan — the secret waterfalls, the local food joints, the off-road paths to viewpoints — was invisible online.
+        </p>
+        <p style="margin-bottom:24px;">
+          So we built Konkan Navigator. A platform by explorers, for explorers. We partner with local guides, document hidden spots, and create tools to help every type of traveler plan their perfect Konkan journey.
+        </p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap;">
+          <a href="explore.html" class="btn btn-primary ripple">Start Exploring →</a>
+          <a href="contact.html" class="btn btn-outline ripple">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" style="background:white;">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge">⚡ What We Offer</span>
+      <h2>Everything You Need for<br><span class="text-gradient">Perfect Konkan Travel</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">🗺️</div>
+        <h3>Hidden Places</h3>
+        <p>150+ curated destinations beyond the usual tourist circuit — secret beaches, unnamed waterfalls, and forgotten temples.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">✅</div>
+        <h3>Verified Guides</h3>
+        <p>All guides are background-checked, certified, and reviewed by real travelers. Your safety is our priority.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🧠</div>
+        <h3>Smart Planning</h3>
+        <p>Our AI-powered trip planner creates personalized day-by-day itineraries based on your budget and interests.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🚨</div>
+        <h3>Safety Alerts</h3>
+        <p>Real-time updates on weather, road conditions, and safety advisories for all Konkan regions.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🌱</div>
+        <h3>Eco Tourism</h3>
+        <p>We promote sustainable travel practices and partner only with eco-conscious guides and accommodations.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📱</div>
+        <h3>Offline Ready</h3>
+        <p>Download guides and maps for offline use — perfect for coastal areas with limited connectivity.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">💰</div>
+        <h3>Budget Friendly</h3>
+        <p>Options for every budget — from backpacker dorms to luxury beach resorts. We cover it all.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🤝</div>
+        <h3>Local Community</h3>
+        <p>Every booking supports local guides, homestay owners, and the fishing communities of Konkan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MILESTONES -->
+<section class="section why-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge" style="background:rgba(255,255,255,0.2);color:white;border-color:rgba(255,255,255,0.3);">📈 Our Journey</span>
+      <h2 style="color:white;">Growing with Every<br>Konkan Sunrise</h2>
+      <div class="divider" style="background:rgba(255,255,255,0.4);"></div>
+    </div>
+    <div class="milestones reveal">
+      <div class="milestone">
+        <div class="year">2020</div>
+        <p>Founded with 10 destinations and a dream</p>
+      </div>
+      <div class="milestone">
+        <div class="year">2021</div>
+        <p>Launched guide network with 20 local partners</p>
+      </div>
+      <div class="milestone">
+        <div class="year">2022</div>
+        <p>10,000+ happy travelers milestone reached</p>
+      </div>
+      <div class="milestone">
+        <div class="year">2023</div>
+        <p>Trip Planner launched — 5000+ itineraries generated</p>
+      </div>
+      <div class="milestone">
+        <div class="year">2024</div>
+        <p>80+ verified guides across 3 districts</p>
+      </div>
+      <div class="milestone">
+        <div class="year">2025</div>
+        <p>150+ destinations, ₹50L+ earned by local guides</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="badge">👥 Meet the Team</span>
+      <h2>The People Behind<br><span class="text-gradient">Konkan Navigator</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <img src="data:image/jpeg;base64,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" alt="Arjun" />
+        </div>
+        <h4>Shravani Pawar</h4>
+        <div class="role">Founder & CEO</div>
+        <p class="bio">Konkan native, tech entrepreneur, and passionate coastal explorer.</p>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <img src="data:image/jpeg;base64,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" alt="Priya" />
+        </div>
+        <h4>Shree Ram </h4>
+        <div class="role">Head of Guides</div>
+        <p class="bio">Former tour operator with 12 years of Konkan experience.</p>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <img src="data:image/jpeg;base64,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" alt="Dev" />
+        </div>
+        <h4>Paras Parte</h4>
+        <div class="role">Lead Developer</div>
+        <p class="bio">Full-stack dev building tools that make travel planning delightful.</p>
+      </div>
+      <div class="team-card reveal">
+        <div class="team-avatar">
+          <img src="data:image/jpeg;base64,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" alt="Smita" />
+        </div>
+        <h4>Meet Patel</h4>
+        <div class="role">Content & Photography</div>
+        <p class="bio">Travel writer and photographer who's visited every Konkan beach twice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="background:var(--primary-gradient);padding:70px 0;text-align:center;">
+  <div class="container reveal">
+    <h2 style="color:white;margin-bottom:12px;">Join the Konkan Community</h2>
+    <p style="color:rgba(255,255,255,0.8);margin-bottom:32px;max-width:480px;margin-left:auto;margin-right:auto;">
+      Be part of a growing community of Konkan lovers. Share stories, discover hidden gems, and support local communities.
+    </p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="signin.html" class="btn btn-gold btn-lg ripple">Join Now — It's Free!</a>
+      <a href="contact.html" class="btn btn-white btn-lg ripple">Contact Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">🧭 Konkan Navigator</div>
+  <div class="footer-tagline">Guiding Your Konkan Journey</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a><a href="explore.html">Explore</a><a href="guides.html">Guides</a>
+    <a href="trip-planner.html">Trip Planner</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Konkan Navigator. All rights reserved.</div>
+</footer>
+
+<div id="toast-container"></div>
+<script src="js/script.js"></script>
+</body>
+</html>
